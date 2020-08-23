@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".product_details"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp">
+
+    <ListView
+        android:layout_marginTop="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:id="@+id/listview">
+
+    </ListView>
+
+    <!--include layout="@layout/layout_bottom_navigation_view"/-->
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:text="Product List"
+        android:layout_centerHorizontal="true"
+        android:textSize="40sp"
+        android:textColor="#0C3502"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="53dp"/>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD PRODUCT"
+        android:theme="@style/Button"
+        android:layout_below="@+id/listview"
+        android:background="@drawable/button_style"
+        android:backgroundTint="#1b8501"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

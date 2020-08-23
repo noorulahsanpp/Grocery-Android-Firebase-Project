@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".add_product">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:text="Add product"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="40sp"
+        android:textColor="#0C3502"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="53dp"
+        tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginTop="150dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/image"
+            />
+
+        <EditText
+            android:id="@+id/Name"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="300dp"
+            android:layout_marginLeft="40dp"
+            android:width="300dp"
+            android:background="@drawable/edittextborder"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/tabs"
+            android:hint="Name Of Product"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/Category"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="360dp"
+            android:width="300dp"
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/edittextborder"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/tabs"
+            android:hint="Category"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textSize="15dp" />
+        <EditText
+            android:id="@+id/Best"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="360dp"
+            android:width="300dp"
+            android:layout_marginLeft="220dp"
+            android:background="@drawable/edittextborder"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/tabs"
+            android:hint="Best Before"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textSize="15dp" />
+        <EditText
+            android:id="@+id/Quantity"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="420dp"
+            android:width="300dp"
+            android:layout_marginLeft="220dp"
+            android:background="@drawable/edittextborder"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/tabs"
+            android:hint="Quantity"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textSize="15dp" />
+        <EditText
+            android:id="@+id/Manufacturing"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="300dp"
+            android:width="300dp"
+            android:layout_marginLeft="220dp"
+            android:background="@drawable/edittextborder"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/tabs"
+            android:hint="Manufcturing Date"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/Price"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="420dp"
+            android:layout_marginLeft="40dp"
+            android:width="300dp"
+            android:background="@drawable/edittextborder"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/tabs"
+            android:hint="Price"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/Other"
+            android:layout_width="335dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="480dp"
+            android:layout_marginLeft="40dp"
+            android:width="300dp"
+            android:background="@drawable/edittextborder"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/tabs"
+            android:hint="Other Details"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textSize="15dp" />
+        <Button
+            android:id="@+id/button"
+            android:layout_width="335dp"
+            android:layout_height="wrap_content"
+            android:text="ADD"
+            android:theme="@style/Button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="600dp"
+            android:background="@drawable/button_style"
+            android:backgroundTint="#1b8501" />
+
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
