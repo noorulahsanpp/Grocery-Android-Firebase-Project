@@ -1,8 +1,32 @@
 package com.example.grocery;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class add_product extends AppCompatActivity {
     private static final String TAG = "AddProduct";
@@ -10,13 +34,13 @@ public class add_product extends AppCompatActivity {
     private String pName = "", pCategory = "", pOther = "";
     private float pPrice = 0;
     private int pQuantity = 0;
-    private EditText nameET, categoryET, priceET, quantityET, otherET;
+    private EditText nameET, priceET, quantityET;
     private Button addBT;
     private ProgressDialog progressDialog;
 
     private FirebaseFirestore firebaseFirestore;
 
-    private Spinner category;
+    private Spinner categorySp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +49,12 @@ public class add_product extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
         getSupportActionBar().hide();
         setContentView(R.layout.activity_add_product);
+        initWidgets();
         setSpinner();
 
     }
-    public void initWidgets() {
-        category = (Spinner) findViewById(R.id.Category);
-    }
     public void setSpinner(){
-        category.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        categorySp.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
         List<String> categories = new ArrayList<>();
         categories.add("Category");
         categories.add("Groceries");
@@ -42,7 +64,7 @@ public class add_product extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        category.setAdapter(adapter);
+        categorySp.setAdapter(adapter);
         initWidgets();
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -133,8 +155,6 @@ public class add_product extends AppCompatActivity {
 
     public void getData(){
         pName = nameET.getText().toString().trim();
-        pCategory = categoryET.getText().toString().trim();
-        pOther = otherET.getText().toString().trim();
         pQuantity = Integer.parseInt(quantityET.getText().toString().trim());
         pPrice = Float.parseFloat(priceET.getText().toString().trim());
     }
@@ -155,11 +175,11 @@ public class add_product extends AppCompatActivity {
             priceET.requestFocus();
             return false;
         }
-        else if(TextUtils.isEmpty(category)){
-            categoryET.setError("Invalid Input");
-            categoryET.requestFocus();
-            return false;
-        }
+//        else if(TextUtils.isEmpty(category)){
+ //           categorySp.setError("Invalid Input");
+ //           categorySp.requestFocus();
+ //           return false;
+ //       }
 //        else if(TextUtils.isEmpty(other)){
 //            otherET.setError("Invalid Input");
 //            otherET.requestFocus();
@@ -180,10 +200,9 @@ public class add_product extends AppCompatActivity {
     private void initWidgets(){
         Log.d(TAG, "initWidgets: Initialising widgets");
         nameET = findViewById(R.id.Name);
-        categoryET = findViewById(R.id.Category);
+        categorySp = findViewById(R.id.Category);
         priceET = findViewById(R.id.Price);
         quantityET = findViewById(R.id.Quantity);
-        otherET = findViewById(R.id.Other);
         addBT = findViewById(R.id.button);
     }
 }

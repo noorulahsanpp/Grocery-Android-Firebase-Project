@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditProducts">
+    tools:context=".edit_products">
 
 <RelativeLayout
     android:layout_width="match_parent"
@@ -22,61 +22,30 @@
         tools:ignore="MissingConstraints" />
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="150dp"
-        android:layout_centerHorizontal="true"
         android:id="@+id/image"
-        />
+        android:layout_width="121dp"
+        android:layout_height="138dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:src="@mipmap/ic_launcher" />
+
 
     <EditText
-        android:id="@+id/Name"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:layout_marginLeft="40dp"
-        android:width="300dp"
-        android:background="@drawable/edittextborder"
-        android:drawablePadding="5dp"
-        android:drawableTint="@color/tabs"
-        android:hint="Name Of Product"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:textSize="15dp" />
-
-
-    <Spinner
         android:id="@+id/Category"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="360dp"
+        android:layout_marginTop="350dp"
         android:width="300dp"
-        android:background="@drawable/spinner_style"
+        android:background="@drawable/edittextborder"
         android:padding="10dp"
-        android:spinnerMode="dropdown"
         android:textSize="15dp" />
 
-    <EditText
-        android:id="@+id/Best"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="360dp"
-        android:width="300dp"
-        android:layout_marginLeft="220dp"
-        android:background="@drawable/edittextborder"
-        android:drawablePadding="5dp"
-        android:drawableTint="@color/tabs"
-        android:hint="Best Before"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:textSize="15dp" />
     <EditText
         android:id="@+id/Quantity"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="420dp"
+        android:layout_marginTop="350dp"
         android:width="300dp"
         android:layout_marginLeft="220dp"
         android:background="@drawable/edittextborder"
@@ -87,16 +56,16 @@
         android:padding="10dp"
         android:textSize="15dp" />
     <EditText
-        android:id="@+id/Manufacturing"
+        android:id="@+id/newquantity"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="420dp"
         android:width="300dp"
         android:layout_marginLeft="220dp"
         android:background="@drawable/edittextborder"
         android:drawablePadding="5dp"
         android:drawableTint="@color/tabs"
-        android:hint="Manufcturing Date"
+        android:hint="New Quantity"
         android:inputType="textPersonName"
         android:padding="10dp"
         android:textSize="15dp" />
@@ -116,38 +85,37 @@
         android:padding="10dp"
         android:textSize="15dp" />
 
-    <EditText
-        android:id="@+id/Other"
-        android:layout_width="335dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="480dp"
-        android:layout_marginLeft="40dp"
-        android:width="300dp"
-        android:background="@drawable/edittextborder"
-        android:drawablePadding="5dp"
-        android:drawableTint="@color/tabs"
-        android:hint="Other Details"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:textSize="15dp" />
     <Button
         android:id="@+id/Edit"
-        android:layout_width="150dp"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:text="EDIT"
+        android:layout_marginLeft="130dp"
+        android:text="EDIT DETAILS"
         android:theme="@style/Button"
-        android:layout_marginTop="600dp"
+        android:layout_marginTop="500dp"
+        android:textSize="20dp"
         android:background="@drawable/button_style"
         android:backgroundTint="#1b8501" />
     <Button
         android:id="@+id/Delete"
-        android:layout_width="150dp"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:text="DELETE"
-        android:layout_marginLeft="230dp"
+        android:text="DELETE PRODUCT"
+        android:layout_marginLeft="130dp"
         android:theme="@style/Button"
-        android:layout_marginTop="600dp"
+        android:textSize="20dp"
+        android:layout_marginTop="640dp"
+        android:background="@drawable/button_style"
+        android:backgroundTint="#85011B" />
+    <Button
+        android:id="@+id/SAVE"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:text="SAVE CHANGES"
+        android:layout_marginLeft="130dp"
+        android:theme="@style/Button"
+        android:textSize="20dp"
+        android:layout_marginTop="570dp"
         android:background="@drawable/button_style"
         android:backgroundTint="#1b8501" />
 
