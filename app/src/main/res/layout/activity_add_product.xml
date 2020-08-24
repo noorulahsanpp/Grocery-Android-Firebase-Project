@@ -59,20 +59,7 @@
             android:inputType="textPersonName"
             android:padding="10dp"
             android:textSize="15dp" />
-        <EditText
-            android:id="@+id/Best"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="360dp"
-            android:width="300dp"
-            android:layout_marginLeft="220dp"
-            android:background="@drawable/edittextborder"
-            android:drawablePadding="5dp"
-            android:drawableTint="@color/tabs"
-            android:hint="Best Before"
-            android:inputType="textPersonName"
-            android:padding="10dp"
-            android:textSize="15dp" />
+
         <EditText
             android:id="@+id/Quantity"
             android:layout_width="150dp"
@@ -84,20 +71,6 @@
             android:drawablePadding="5dp"
             android:drawableTint="@color/tabs"
             android:hint="Quantity"
-            android:inputType="textPersonName"
-            android:padding="10dp"
-            android:textSize="15dp" />
-        <EditText
-            android:id="@+id/Manufacturing"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="300dp"
-            android:width="300dp"
-            android:layout_marginLeft="220dp"
-            android:background="@drawable/edittextborder"
-            android:drawablePadding="5dp"
-            android:drawableTint="@color/tabs"
-            android:hint="Manufcturing Date"
             android:inputType="textPersonName"
             android:padding="10dp"
             android:textSize="15dp" />

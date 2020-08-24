@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class product_details extends AppCompatActivity {
     private static final String TAG = "Notification";
     private static final int ACTIVITY_NUM = 1;
@@ -27,6 +29,8 @@ public class product_details extends AppCompatActivity {
     int images[] = {R.drawable.sabola ,R.drawable.ashirwad, R.drawable.eastern,R.drawable.lifebouy,R.drawable.nirapara};
     private Context mContext;
 
+    private FirebaseFirestore firebaseFirestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,8 @@ public class product_details extends AppCompatActivity {
         add = findViewById(R.id.button);
         MyAdapter adapter = new MyAdapter(this, name, price, images);
         listView.setAdapter(adapter);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,10 +82,8 @@ public class product_details extends AppCompatActivity {
                 myTitle.setText(rTitle[position]);
                 myDescription.setText(rDescription[position]);
 
-
-
-
                 return row;
             }
+
         }
     }
