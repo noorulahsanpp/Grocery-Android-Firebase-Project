@@ -45,20 +45,19 @@
             android:padding="10dp"
             android:textSize="15dp" />
 
-        <EditText
+
+        <Spinner
             android:id="@+id/Category"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="360dp"
             android:width="300dp"
-            android:layout_marginLeft="40dp"
-            android:background="@drawable/edittextborder"
-            android:drawablePadding="5dp"
-            android:drawableTint="@color/tabs"
-            android:hint="Category"
-            android:inputType="textPersonName"
+            android:background="@drawable/spinner_style"
             android:padding="10dp"
+            android:spinnerMode="dropdown"
             android:textSize="15dp" />
+
         <EditText
             android:id="@+id/Best"
             android:layout_width="150dp"

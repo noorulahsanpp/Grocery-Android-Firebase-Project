@@ -16,4 +16,12 @@
         <item name="android:ems">10</item>
 
     </style>
+    <style name="EditText" parent = "android:Widget.EditText">
+        <item name="android:ems">10</item>
+        <item name="android:textSize">15dp</item>
+        <item name = "android:padding">10dp</item>
+        <item name="android:width">300dp</item>
+
+
+    </style>
 </resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OTP">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="93dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/otp"
+
+            />
+
+
+        <TextView
+            android:layout_marginTop="140dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Code Verification"
+            android:textSize="17dp"
+            android:textColor="#092502"/>
+        <TextView
+            android:layout_width="350dp"
+            android:layout_marginTop="180dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="#605D5D"
+            android:gravity="center"
+            android:text="Please enter the verification code send to your registered phone number"/>
+
+
+
+        <EditText
+            android:id="@+id/editText5"
+            android:layout_width="231dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="240dp"
+            android:hint="Enter OTP"
+            android:inputType="textPersonName"
+            android:background="@drawable/edittextborder"
+            android:theme="@style/EditText" />
+
+        <Button
+            android:id="@+id/button15"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginLeft="268dp"
+            android:layout_marginTop="239dp"
+            android:background="@drawable/button_style"
+            android:backgroundTint="#1b8501"
+            android:padding="10dp"
+            android:text="VERIFY"
+            android:textColor="@color/headings"
+            android:textSize="15dp" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>
