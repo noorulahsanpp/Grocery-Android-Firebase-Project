@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Registration extends AppCompatActivity {
+public class UserRegistration extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "UserRegistration";
     private ImageView photo;
@@ -42,7 +42,7 @@ public class Registration extends AppCompatActivity {
     private Spinner category;
     private Button signUpBtn;
     private ProgressDialog progressDialog;
-    private TextView loginBtn;
+    private TextView register;
 
 
     @Override
@@ -50,18 +50,28 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_user_registration);
 
         progressDialog = new ProgressDialog(this);
         initWidgets();
         setSpinner();
+        init();
 
     }
 
+    private void init(){
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),OTP.class));
+            }
+        });
+    }
 
     private void initWidgets() {
         Log.d(TAG, "initWidgets: Initialising widgets");
         signUpBtn = findViewById(R.id.button4);
+        register = findViewById(R.id.textView);
         name = findViewById(R.id.name);
         location = findViewById(R.id.location);
         password = findViewById(R.id.password);
@@ -71,7 +81,7 @@ public class Registration extends AppCompatActivity {
     }
 
     public void setSpinner() {
-        category.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        category.setOnItemSelectedListener(this);
         List<String> categories = new ArrayList<>();
         categories.add("Category");
         categories.add("General Store");
@@ -83,6 +93,21 @@ public class Registration extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(adapter);
 
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
+        String item = parent.getItemAtPosition(i).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }
