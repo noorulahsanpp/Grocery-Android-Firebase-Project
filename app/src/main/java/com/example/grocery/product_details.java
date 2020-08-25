@@ -52,7 +52,7 @@ public class product_details extends AppCompatActivity {
 
     }
 
-        class MyAdapter extends ArrayAdapter<String> implements com.example.grocery.MyAdapter {
+        class MyAdapter extends ArrayAdapter<String> {
 
             Context context;
             String rTitle[];

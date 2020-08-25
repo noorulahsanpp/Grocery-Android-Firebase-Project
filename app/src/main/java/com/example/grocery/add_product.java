@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class add_product extends AppCompatActivity {
+public class add_product extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddProduct";
 
     private String pName = "", pCategory = "", pOther = "";
@@ -54,7 +54,7 @@ public class add_product extends AppCompatActivity {
 
     }
     public void setSpinner(){
-        categorySp.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        categorySp.setOnItemSelectedListener(this);
         List<String> categories = new ArrayList<>();
         categories.add("Category");
         categories.add("Groceries");
@@ -204,5 +204,18 @@ public class add_product extends AppCompatActivity {
         priceET = findViewById(R.id.Price);
         quantityET = findViewById(R.id.Quantity);
         addBT = findViewById(R.id.button);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
+        String item = parent.getItemAtPosition(i).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
