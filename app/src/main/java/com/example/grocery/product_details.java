@@ -60,7 +60,7 @@ public class product_details extends AppCompatActivity {
             int rImgs[];
 
             MyAdapter (Context c, String title[], String description[], int imgs[]) {
-                super(c, R.layout.list_items,title);
+                super(c, R.layout.products_list,title);
                 this.context = c;
                 this.rTitle = title;
                 this.rDescription = description;
@@ -72,7 +72,7 @@ public class product_details extends AppCompatActivity {
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 LayoutInflater layoutInflater = (LayoutInflater)getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View row = layoutInflater.inflate(R.layout.list_items, parent, false);
+                View row = layoutInflater.inflate(R.layout.products_list, parent, false);
                 ImageView images = row.findViewById(R.id.image);
                 TextView myTitle = row.findViewById(R.id.topic);
                 TextView myDescription = row.findViewById(R.id.price);
