@@ -29,6 +29,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,15 +42,16 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
 
     private static final String TAG = "UserRegistration";
     private ImageView photo;
-    private EditText passwordET, phoneET, nameET, locationET;
+    private EditText passwordET, phoneET, nameET, locationET, ownerNAmeET;
     private Spinner categoryET;
     private Button signUpBtn;
     private ProgressDialog progressDialog;
     private TextView register;
     private String sName="", sLocation="", sCategory="", sPassword="";
-    private int sPhone=0;
+    private String phoneNo, userId, uName;
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
 
 
 
@@ -65,8 +68,12 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
         setSpinner();
         init();
 
+        phoneNo = getIntent().getStringExtra("phoneNo");
+        phoneET.setText(phoneNo);
 
-
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getUid();
     }
 
     private void init(){
@@ -74,36 +81,44 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
             @Override
             public void onClick(View view) {
                 getData();
-                if (validate(sName, sPhone, sCategory, sLocation, sPassword)){
-                    Intent intent = new Intent(getApplicationContext(),OTP.class);
-                    intent.putExtra("phoneNo", sPhone);
-                    startActivity(intent);
+                if (validate(sName, sCategory, sLocation, uName)){
+                   saveData();
                 }
-
             }
         });
     }
 
-    public void sendOTP(int phoneNumber) {
-
-
+    public void saveData(){
+        try {
+            DocumentReference product = firebaseFirestore.collection("stores").document(userId+"");
+            Map<String, Object> productinfo = new HashMap<>();
+            productinfo.put("storename", sName);
+            productinfo.put("userid", userId);
+            productinfo.put("category", sCategory);
+            productinfo.put("location", sLocation);
+            productinfo.put("phone", phoneNo);
+            productinfo.put("username", uName);
+            product.set(productinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    startActivity(new Intent(UserRegistration.this, home.class));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(UserRegistration.this, "Something went wrong. Please try again later." , Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        catch (Exception e){
+            Log.d(TAG, "addProduct: "+e);
+        }
     }
 
-
-    public Boolean validate(String name, int phone, String category, String location, String password){
+    public Boolean validate(String name, String category, String location, String uname){
         if (TextUtils.isEmpty(name)){
             nameET.setError("Input name");
             nameET.requestFocus();
-            return false;
-        }
-        else if (TextUtils.isEmpty(phone+"")){
-            phoneET.setError("Input Input");
-            phoneET.requestFocus();
-            return false;
-        }
-        else if(Integer.toString(phone).length()<=10){
-            phoneET.setError("Inavlid Input");
-            phoneET.requestFocus();
             return false;
         }
         else if(TextUtils.isEmpty(category)){
@@ -114,14 +129,14 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
             Toast.makeText(getApplicationContext(), "Please choose category", Toast.LENGTH_LONG);
             return false;
         }
-        if (TextUtils.isEmpty(password)){
-            passwordET.setError("Input Password");
-            passwordET.requestFocus();
+        else if (TextUtils.isEmpty(location)){
+            locationET.setError("Input Location");
+            locationET.requestFocus();
             return false;
         }
-        if (TextUtils.isEmpty(location)){
-            passwordET.setError("Input Location");
-            passwordET.requestFocus();
+        else if (TextUtils.isEmpty(uname)){
+            nameET.setError("Input Owner name");
+            nameET.requestFocus();
             return false;
         }
         return true;
@@ -133,18 +148,16 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
         register = findViewById(R.id.textView);
         nameET = findViewById(R.id.name);
         locationET = findViewById(R.id.location);
-        passwordET = findViewById(R.id.password);
         phoneET = findViewById(R.id.phone);
         photo = findViewById(R.id.image);
         categoryET = findViewById(R.id.category);
+        ownerNAmeET = findViewById(R.id.ownername);
     }
 
     public void getData(){
         sName = nameET.getText().toString().trim();
         sLocation = locationET.getText().toString().trim();
-        sPhone = Integer.parseInt(phoneET.getText().toString().trim());
-        sPassword = passwordET.getText().toString().trim();
-
+        uName = ownerNAmeET.getText().toString().trim();
     }
 
     public void setSpinner() {
