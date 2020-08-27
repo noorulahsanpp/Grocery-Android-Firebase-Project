@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OrderDetails">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="ORDER NO :"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="100dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:textSize="20dp"
+        android:text=""
+        android:id="@+id/orderno"
+        android:textStyle="bold"
+        android:layout_marginLeft="220dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
+        android:text="Items List"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="100dp"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="270dp"
+            android:id="@+id/orders">
+
+        </ListView>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Name     :"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="100dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/customer"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+
+            android:layout_marginLeft="190dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="Phone    :"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="100dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/phoneno"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:textSize="20dp"
+
+            android:layout_marginLeft="190dp"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/Orderrdy"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:text="ORDER readY"
+        android:layout_centerHorizontal="true"
+        android:theme="@style/Button"
+        android:textSize="20dp"
+        android:layout_marginTop="530dp"
+        android:background="@drawable/button_style"
+        android:backgroundTint="#255702" />
+
+    <!--Button
+        android:id="@+id/Delete"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel Order"
+        android:layout_marginLeft="130dp"
+        android:theme="@style/Button"
+        android:textSize="20dp"
+        android:layout_marginTop="600dp"
+        android:background="@drawable/button_style"
+        android:backgroundTint="#85011B" /-->
+
+</RelativeLayout>
