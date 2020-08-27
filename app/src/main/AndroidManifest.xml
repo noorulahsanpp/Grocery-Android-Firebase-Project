@@ -12,7 +12,7 @@
         <activity android:name=".phoneReg">
 
         </activity>
-        <activity android:name=".home" >
+        <activity android:name=".home" ></activity>
         <activity android:name=".OrderDetails">
 
 
@@ -27,18 +27,12 @@
         <activity android:name=".UserRegistration">
          </activity>
 
-
-        <activity android:name=".phoneReg">
-
-        </activity>
-        <activity android:name=".home" />
-        <activity android:name=".UserRegistration"></activity>
         <activity android:name=".EditProducts" > </activity>
         <activity android:name=".OTP" />
         <activity android:name=".forgotpassword" />
         <activity android:name=".Login" />
         <activity android:name=".add_product" />
-        <activity android:name=".product_details" >
+        <activity android:name=".product_details" ></activity>
 
     </application>
 

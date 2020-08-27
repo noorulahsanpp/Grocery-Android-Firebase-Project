@@ -95,8 +95,8 @@ public class ViewOrders extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     for (QueryDocumentSnapshot documentSnapshot :task.getResult()) {
-                        orderno= documentSnapshot.get("orderno").toString();
-                        timestamp = documentSnapshot.getTimestamp("date");
+                            orderno= documentSnapshot.get("orderno").toString();
+                           timestamp = documentSnapshot.getTimestamp("date");
                         Date date = timestamp.toDate();
                         String date1 = simpleDateFormat.format(date);
                         Map<Object, Object> productdetails = new HashMap<>();
@@ -107,9 +107,10 @@ public class ViewOrders extends AppCompatActivity {
                         resultmap.put("FirstLine", pair.getKey().toString());
                         resultmap.put("SecondLine", pair.getValue().toString());
                         listitems.add(resultmap);
+                        getorderno(listitems);
                         vieworder.setAdapter(adapter);
                     }
-                    getorderno(listitems);
+
                 }else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
