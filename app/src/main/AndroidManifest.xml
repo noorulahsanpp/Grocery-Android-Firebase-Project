@@ -10,22 +10,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".OrderDetails">
+
+
+        </activity>
+        <activity android:name=".ViewOrders">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".ViewOrders">
+         </activity>
+
+
+        <activity android:name=".phoneReg">
 
         </activity>
+        <activity android:name=".home" />
         <activity android:name=".UserRegistration"></activity>
-        <activity android:name=".EditProducts" />
+        <activity android:name=".EditProducts" > </activity>
         <activity android:name=".OTP" />
         <activity android:name=".forgotpassword" />
         <activity android:name=".Login" />
         <activity android:name=".add_product" />
-        <activity android:name=".product_details" />
+        <activity android:name=".product_details" >
+
+        </activity>
     </application>
 
 </manifest>

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -31,7 +32,7 @@ import java.util.Map;
 public class add_product extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddProduct";
 
-    private String pName = "", pCategory = "", pOther = "";
+    private String pName = "", pCategory = "";
     private float pPrice = 0;
     private int pQuantity = 0;
     private EditText nameET, priceET, quantityET;
@@ -51,30 +52,33 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_add_product);
         initWidgets();
         setSpinner();
+        buttonclick();;
 
     }
-    public void setSpinner(){
+    public void setSpinner() {
         categorySp.setOnItemSelectedListener(this);
         List<String> categories = new ArrayList<>();
         categories.add("Category");
-        categories.add("Groceries");
-        categories.add("Electronics");
-        categories.add("Home Appliances");
+        categories.add("Grocery");
+        categories.add("Beauty health");
+        categories.add("Household");
         categories.add("Fruits and vegetables");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,categories);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySp.setAdapter(adapter);
         initWidgets();
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         progressDialog = new ProgressDialog(this);
+    }
+    private void buttonclick(){
 
         addBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getData();
-                if (validate(pName, pPrice, pCategory, pOther, pQuantity)){
+                if (validate(pName, pPrice, pCategory, pQuantity)){
                     addProduct();
                 }
 
@@ -92,12 +96,11 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
 
     public void addProduct(){
         try {
-            DocumentReference product = firebaseFirestore.collection("stores").document("A").collection("products").document();
+            DocumentReference product = firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("products").document();
             Map<String, Object> productinfo = new HashMap<>();
             productinfo.put("name", pName);
             productinfo.put("quantity", pQuantity);
             productinfo.put("category", pCategory);
-            productinfo.put("other", pOther);
             productinfo.put("price", pPrice);
             product.set(productinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -157,9 +160,10 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
         pName = nameET.getText().toString().trim();
         pQuantity = Integer.parseInt(quantityET.getText().toString().trim());
         pPrice = Float.parseFloat(priceET.getText().toString().trim());
+        pCategory = categorySp.getSelectedItem().toString();
     }
 
-    public Boolean validate(String name, float price, String category, String other, int quantity){
+    public Boolean validate(String name, float price, String category, int quantity){
         if (TextUtils.isEmpty(name)){
             nameET.setError("Input name");
             nameET.requestFocus();
@@ -175,11 +179,11 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
             priceET.requestFocus();
             return false;
         }
-//        else if(TextUtils.isEmpty(category)){
- //           categorySp.setError("Invalid Input");
- //           categorySp.requestFocus();
- //           return false;
- //       }
+//       else if(TextUtils.isEmpty(category)){
+//           categorySp.setError("Invalid Input");
+//           categorySp.requestFocus();
+//           return false;
+//        }
 //        else if(TextUtils.isEmpty(other)){
 //            otherET.setError("Invalid Input");
 //            otherET.requestFocus();

@@ -16,6 +16,7 @@
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:textSize="40sp"
+        android:id="@+id/name"
         android:textColor="#0C3502"
         tools:layout_editor_absoluteX="35dp"
         tools:layout_editor_absoluteY="53dp"
