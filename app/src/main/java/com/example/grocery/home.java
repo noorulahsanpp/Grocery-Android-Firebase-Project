@@ -3,6 +3,7 @@ package com.example.grocery;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,10 +16,13 @@ public class home extends AppCompatActivity {
     private static final String TAG = "home";
     private FirebaseAuth mAuth;
 
-    private Button signOutBT;
+    private Button signOutBT, addProduct;
     private TextView userIdTV;
 
-    private String userId;
+    private String userId = "Feqpwrb7W9frPEUjXO6Y97EXujC3";
+
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,7 @@ public class home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         initWidgets();
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -40,6 +45,7 @@ public class home extends AppCompatActivity {
 
         userId = mAuth.getCurrentUser().getUid();
         userIdTV.setText(userId);
+        setSharedPreferences();
 
         signOutBT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,10 +58,23 @@ public class home extends AppCompatActivity {
                 return;
             }
         });
+
+        addProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(home.this, add_product.class));
+            }
+        });
     }
 
     public void initWidgets(){
         signOutBT = findViewById(R.id.button3);
         userIdTV = findViewById(R.id.textView2);
+        addProduct = findViewById(R.id.button5);
+    }
+    public void setSharedPreferences(){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userid", userId);
+        editor.commit();
     }
 }

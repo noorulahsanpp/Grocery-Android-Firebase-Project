@@ -1,11 +1,16 @@
 package com.example.grocery;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,16 +19,26 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,15 +46,24 @@ import java.util.Map;
 public class add_product extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "AddProduct";
 
-    private String pName = "", pCategory = "", pOther = "";
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    private static final int GalleryPick = 1000;
+
+    private Uri imageUri;
+
+
+    private String pName = "", pCategory = "", pOther = "",saveCurrentDate,saveCurrentTime,downloadImageUrl;
+    private ImageView image;
     private float pPrice = 0;
     private int pQuantity = 0;
     private EditText nameET, priceET, quantityET;
     private Button addBT;
     private ProgressDialog progressDialog;
+    SharedPreferences sharedPreferences;
+    private String userId;
 
     private FirebaseFirestore firebaseFirestore;
-
+    private StorageReference mStorageRef;
     private Spinner categorySp;
 
     @Override
@@ -51,8 +75,59 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_add_product);
         initWidgets();
         setSpinner();
+        getSharedPreference();
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        addBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getData();
+                if (validate(pName, pPrice, pQuantity)){
+                    addProductInformation();
+                }
+            }
+        });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGallery();
+            }
+        });
 
     }
+
+    private void openGallery(){
+//        Intent galleryIntent = new Intent();
+//        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+//        galleryIntent.setType("image/*");
+//        startActivityForResult(galleryIntent, GalleryPick);
+
+        Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(openGallery, GalleryPick );
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1000)
+        {
+            if(resultCode == Activity.RESULT_OK)
+            {
+                imageUri = data.getData();
+                Picasso.get().load(imageUri).into(image);
+
+            }
+        }
+//        if (requestCode ==GalleryPick && requestCode ==RESULT_OK && data!=null){
+//            imageUri = data.getData();
+//            image.setImageURI(imageUri);
+//        }
+    }
+
     public void setSpinner(){
         categorySp.setOnItemSelectedListener(this);
         List<String> categories = new ArrayList<>();
@@ -65,40 +140,19 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySp.setAdapter(adapter);
-        initWidgets();
-
-        firebaseFirestore = FirebaseFirestore.getInstance();
         progressDialog = new ProgressDialog(this);
-
-        addBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getData();
-                if (validate(pName, pPrice, pCategory, pOther, pQuantity)){
-                    addProduct();
-                }
-
-            }
-        });
-
-//        edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(openGallery, 1000 );
-//            }
-//        });
     }
 
     public void addProduct(){
         try {
-            DocumentReference product = firebaseFirestore.collection("stores").document("A").collection("products").document();
+            DocumentReference product = firebaseFirestore.collection("stores").document(userId+"").collection("products").document();
             Map<String, Object> productinfo = new HashMap<>();
             productinfo.put("name", pName);
             productinfo.put("quantity", pQuantity);
             productinfo.put("category", pCategory);
-            productinfo.put("other", pOther);
+            productinfo.put("date", saveCurrentDate);
             productinfo.put("price", pPrice);
+            productinfo.put("image", downloadImageUrl);
             product.set(productinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -116,42 +170,50 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
-//    private void uploadImageToFirebase(Uri imageUri)
-//    {
-//        final StorageReference fileReference = storageReference.child("users/"+ userID+"/profile_picture/profile.jpg");
-//        fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        setProfilePicture(uri);
-//                    }
-//                });
-//            }
-//        })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(Profile.this, "Try again", Toast.LENGTH_SHORT);
-//                    }
-//                });
-//    }
+    private void addProductInformation(){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if(requestCode == 1000)
-//        {
-//            if(resultCode == Activity.RESULT_OK)
-//            {
-//                Uri imageUri = data.getData();
-//                uploadImageToFirebase(imageUri);
-//            }
-//        }
-//    }
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
 
+        String productRandomKey = saveCurrentDate+saveCurrentTime;
+
+        final StorageReference filepath = mStorageRef.child("merchants/"+userId+"/prodcuts/"+productRandomKey+".jpg");
+        final UploadTask uploadTask = filepath.putFile(imageUri);
+
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(add_product.this, "Error : "+e.getMessage(), Toast.LENGTH_LONG);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(add_product.this, "Image successfully uploaded", Toast.LENGTH_LONG);
+
+                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()){
+                            throw task.getException();
+                        }
+                        downloadImageUrl = filepath.getDownloadUrl().toString();
+                        return filepath.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(add_product.this, "got imageuri successfully", Toast.LENGTH_LONG);
+                            addProduct();
+                        }
+                    }
+                });
+            }
+        });
+    }
 
     public void getData(){
         pName = nameET.getText().toString().trim();
@@ -159,7 +221,7 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
         pPrice = Float.parseFloat(priceET.getText().toString().trim());
     }
 
-    public Boolean validate(String name, float price, String category, String other, int quantity){
+    public Boolean validate(String name, float price, int quantity){
         if (TextUtils.isEmpty(name)){
             nameET.setError("Input name");
             nameET.requestFocus();
@@ -195,6 +257,11 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
             priceET.requestFocus();
             return false;
         }
+//        else if(imageUri==null){
+//            Toast.makeText(this, "Product image is mandatory.",Toast.LENGTH_LONG);
+//            return false;
+//        }
+
         return true;
     }
     private void initWidgets(){
@@ -204,6 +271,7 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
         priceET = findViewById(R.id.Price);
         quantityET = findViewById(R.id.Quantity);
         addBT = findViewById(R.id.button);
+        image = findViewById(R.id.image);
     }
 
     @Override
@@ -217,5 +285,10 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    public void getSharedPreference() {
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        userId = sharedPreferences.getString("userid", "");
     }
 }
