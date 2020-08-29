@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.arch.core.executor.TaskExecutor;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -39,7 +40,7 @@ public class OTP extends AppCompatActivity {
 
     private Button verifyBT;
     private EditText verifyET;
-    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
     private String verificationCodeBySystem;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -50,12 +51,11 @@ public class OTP extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_o_t_p);
-//        popup();
+        popup();
 
         verifyBT = findViewById(R.id.button15);
         verifyET = findViewById(R.id.editText5);
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
+        progressDialog = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -65,13 +65,17 @@ public class OTP extends AppCompatActivity {
         verifyBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.setTitle("Verifying code");
+                progressDialog.setMessage("Please wait...");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+
                 String code = verifyET.getText().toString().trim();
                 if (code.isEmpty() || code.length()<6){
                     verifyET.setError("Wrong OTP");
                     verifyET.requestFocus();
                     return;
                 }
-                progressBar.setVisibility(View.VISIBLE);
                 verifyCode(code);
             }
         });
@@ -92,7 +96,6 @@ public class OTP extends AppCompatActivity {
         public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
             String code = phoneAuthCredential.getSmsCode();
             if (code!=null){
-                progressBar.setVisibility(View.VISIBLE);
                 verifyCode(code);
             }
         }
@@ -124,6 +127,7 @@ public class OTP extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
+                    progressDialog.dismiss();
                     uid = mAuth.getCurrentUser().getUid();
                     firebaseFirestore.collection("stores").document(uid+"").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
@@ -162,12 +166,9 @@ public class OTP extends AppCompatActivity {
     private void popup() {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-
         getWindow().setLayout((int) (width * .9), (int) (height * .6));
-
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.gravity = Gravity.CENTER;
         params.x = 0;

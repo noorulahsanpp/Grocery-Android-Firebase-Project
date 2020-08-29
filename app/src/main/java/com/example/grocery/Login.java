@@ -26,18 +26,11 @@ import com.google.firebase.auth.FirebaseUser;
 public class Login extends AppCompatActivity {
 
     private static final String TAG = "Login";
-    private static final String KEY_ADMISSIONNO = "admission_number";
-    private static final String KEY_HOSTEL = "hostel";
-    private static final String KEY_USERID = "user_dd";
     public static final String MyPREFERENCES = "MyPrefs" ;
 
-
-    private TextView signUpTv,forgot;
-    private Button loginbtn;
-    private EditText phoneEt,passwordEt;
-    private ProgressDialog progressdialog;
-
-
+    private EditText phoneET;
+    private Button registerBT;
+    private String sPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,58 +38,18 @@ public class Login extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
-        progressdialog = new ProgressDialog(Login.this);
+        phoneET = findViewById(R.id.phone);
+        registerBT = findViewById(R.id.button8);
 
-
-        initWidgets();
-
-        loginbtn.setOnClickListener(new View.OnClickListener() {
+        registerBT.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                loginUser();
+            public void onClick(View view) {
+                sPhone = "+91"+phoneET.getText().toString().trim();
+                Intent intent = new Intent(getApplicationContext(),OTP.class);
+                intent.putExtra("phoneNo", sPhone);
+                startActivity(intent);
             }
         });
-
-        forgot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),forgotpassword.class));
-            }
-        });
-
- /*       signUpTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Verification.class));
-            }
-        });*/
-    }
-    public void initWidgets(){
-        signUpTv = findViewById(R.id.signupTv);
-        loginbtn = (Button) findViewById(R.id.button);
-        phoneEt = (EditText)findViewById(R.id.phone);
-        passwordEt = (EditText)findViewById(R.id.editText2);
-        forgot = findViewById(R.id.forgot);
-    }
-
-    private void loginUser()
-    {
-        String phone = phoneEt.getText().toString().trim();
-        String password = passwordEt.getText().toString().trim();
-        if (TextUtils.isEmpty(phone))
-        {
-            phoneEt.setError("Input Email");
-            phoneEt.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(password))
-        {
-            passwordEt.setError("Input Password");
-            passwordEt.requestFocus();
-            return;
-        }
-        progressdialog.setMessage("Logging in...");
-        progressdialog.show();
 
 
     }

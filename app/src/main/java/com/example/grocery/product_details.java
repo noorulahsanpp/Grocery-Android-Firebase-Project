@@ -1,12 +1,16 @@
 package com.example.grocery;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,17 +40,15 @@ import java.util.List;
 import java.util.Map;
 
 public class product_details extends AppCompatActivity {
-    private static final String TAG = "Notification";
-    private static final int ACTIVITY_NUM = 1;
+    private static final String TAG = "product_details";
+    public static final String MyPREFERENCES = "MyPrefs" ;
 
+    SharedPreferences sharedPreferences;
     private ListView listView;
     private Button add;
-    private String productname, price;
+    private String productname, price, userId;
     int images[] = {R.drawable.sabola ,R.drawable.ashirwad, R.drawable.eastern,R.drawable.lifebouy,R.drawable.nirapara};
-    private Context mContext;
-    private DocumentReference documentReference;
     private CollectionReference collectionReference;
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     final List<HashMap<String,String>> listitems = new ArrayList<>();
 
@@ -54,6 +57,7 @@ public class product_details extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.product_details);
+        getSharedPreference();
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         initwidgets();
@@ -76,7 +80,10 @@ public class product_details extends AppCompatActivity {
         });
 
 
+
+
     }
+
     public void initwidgets(){
         listView = findViewById(R.id.listview);
         add = findViewById(R.id.button);
@@ -87,7 +94,7 @@ public class product_details extends AppCompatActivity {
 
 
         final SimpleAdapter adapter = new SimpleAdapter(this,listitems,R.layout.products_list,new String[]{"FirstLine","SecondLine"},new int[]{R.id.topic,R.id.price});
-        collectionReference = firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("products");
+        collectionReference = firebaseFirestore.collection("stores").document(userId+"").collection("products");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -109,7 +116,17 @@ public class product_details extends AppCompatActivity {
                     Log.d(TAG, "Error getting documents: ", task.getException());
             }
         }});
-    }}
+    }
+    public void getSharedPreference() {
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        userId = sharedPreferences.getString("userid", "");
+    }
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(product_details.this, home.class));
+    }
+
+}
 
 
 

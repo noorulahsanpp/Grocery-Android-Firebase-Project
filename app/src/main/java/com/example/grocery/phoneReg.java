@@ -19,8 +19,8 @@ public class phoneReg extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_reg);
 
-        phoneET = findViewById(R.id.editTextPhone);
-        registerBT = findViewById(R.id.button2);
+        phoneET = findViewById(R.id.phone);
+        registerBT = findViewById(R.id.button);
 
         registerBT.setOnClickListener(new View.OnClickListener() {
             @Override

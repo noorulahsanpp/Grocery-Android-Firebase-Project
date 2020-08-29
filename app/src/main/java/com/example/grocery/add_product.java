@@ -35,6 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,10 +81,15 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
         firebaseFirestore = FirebaseFirestore.getInstance();
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        progressDialog = new ProgressDialog(this);
 
         addBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.setTitle("Adding Product");
+                progressDialog.setMessage("Please wait...");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
                 getData();
                 if (validate(pName, pPrice, pQuantity)){
                     addProductInformation();
@@ -97,34 +103,29 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
                 openGallery();
             }
         });
-
     }
 
     private void openGallery(){
-//        Intent galleryIntent = new Intent();
-//        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-//        galleryIntent.setType("image/*");
-//        startActivityForResult(galleryIntent, GalleryPick);
-
-        Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(openGallery, GalleryPick );
+        CropImage.activity().setAspectRatio(1, 1).start(add_product.this);
+//        Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        startActivityForResult(openGallery, GalleryPick );
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1000)
-        {
-            if(resultCode == Activity.RESULT_OK)
-            {
-                imageUri = data.getData();
-                Picasso.get().load(imageUri).into(image);
-
-            }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data !=null){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            imageUri = result.getUri();
+            Picasso.get().load(imageUri).into(image);
         }
-//        if (requestCode ==GalleryPick && requestCode ==RESULT_OK && data!=null){
-//            imageUri = data.getData();
-//            image.setImageURI(imageUri);
+//        if(requestCode == 1000)
+//        {
+//            if(resultCode == Activity.RESULT_OK)
+//            {
+//                imageUri = data.getData();
+//                Picasso.get().load(imageUri).into(image);
+//            }
 //        }
     }
 
@@ -140,7 +141,6 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySp.setAdapter(adapter);
-        progressDialog = new ProgressDialog(this);
     }
 
     public void addProduct(){
@@ -156,11 +156,13 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
             product.set(productinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
+                    progressDialog.dismiss();
                     startActivity(new Intent(add_product.this, product_details.class));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
                     Toast.makeText(add_product.this, "Something went wrong. Please try again later." , Toast.LENGTH_SHORT).show();
                 }
             });
@@ -242,11 +244,7 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
  //           categorySp.requestFocus();
  //           return false;
  //       }
-//        else if(TextUtils.isEmpty(other)){
-//            otherET.setError("Invalid Input");
-//            otherET.requestFocus();
-//            return false;
-//        }
+
         else if (TextUtils.isEmpty(quantity+"")){
             priceET.setError("Input price");
             priceET.requestFocus();
