@@ -98,8 +98,10 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="500dp"
             android:background="@drawable/textbox"
-            android:drawablePadding="10dp"
             android:drawableLeft="@drawable/ic_action_phone"
+            android:drawablePadding="10dp"
+            android:editable="false"
+            android:enabled="false"
             android:hint="Phone Number"
             android:inputType="number"
             android:theme="@style/EditText" />
