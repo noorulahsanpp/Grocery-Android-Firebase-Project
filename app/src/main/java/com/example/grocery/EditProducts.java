@@ -25,12 +25,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class EditProducts extends AppCompatActivity {
     private static final String TAG = "AddProduct";
 
-    private EditText nameET, priceET, quantityET, categoryET;
+    private EditText newET, priceET, quantityET, categoryET,nameEt;
+
     private Button editBT, saveBT, deleteBT;
     private ProgressDialog progressDialog;
     private String name, category, quantity, price,productname;
     private FirebaseFirestore firebaseFirestore;
-    private DocumentSnapshot documentReference;
+    private DocumentReference documentReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +40,11 @@ public class EditProducts extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
         getSupportActionBar().hide();
         setContentView(R.layout.activity_edit_products);
+        firebaseFirestore = FirebaseFirestore.getInstance();
         initWidgets();
         Intent intent = getIntent();
-        productname = intent.getStringExtra("product_name");
-  //     getData();
+        productname = intent.getExtras().get("productname").toString();
+      getData(productname);
 
 
 
@@ -51,7 +53,8 @@ public class EditProducts extends AppCompatActivity {
 
     private void initWidgets() {
         Log.d(TAG, "initWidgets: Initialising widgets");
-        nameET = findViewById(R.id.name);
+        newET = findViewById(R.id.newquantity);
+        nameEt = findViewById(R.id.name);
         categoryET = findViewById(R.id.Category);
         priceET = findViewById(R.id.Price);
         quantityET = findViewById(R.id.Quantity);
@@ -64,21 +67,24 @@ public class EditProducts extends AppCompatActivity {
     }
 
 
-   /* public void getData() {
+   public void getData(String productname) {
+       documentReference= firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("orders").document(productname);
+       documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+           @Override
+           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+               DocumentSnapshot document = task.getResult();
+               name = document.get("name").toString();
+               category = document.get("category").toString();
+               quantity = document.get("quantity").toString();
+               price = document.get("price").toString();
+               nameEt.setText(name);
+               priceET.setText(price);
+               quantityET.setText(quantity);
+               categoryET.setText(category);
 
-            documentReference = firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("products").document("NaX0uYfs7PlcBHws1djj").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    DocumentSnapshot document = task.getResult();
-                    name = document.get("name").toString();
-                    category = document.get("category").toString();
-                    quantity = document.get("quantity").toString();
-                    price = document.get("price").toString();
-                    nameET.setText(name);
-                    categoryET.setText(category);
 
                 }
             });
-    }*/
+    }
 
 }

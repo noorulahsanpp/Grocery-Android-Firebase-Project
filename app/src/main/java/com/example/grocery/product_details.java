@@ -48,6 +48,8 @@ public class product_details extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     final List<HashMap<String,String>> listitems = new ArrayList<>();
+    final List<String> itemname = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +70,8 @@ public class product_details extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                String productname = parent.getItemAtPosition(position).toString().trim();
-                Intent intent = new Intent(product_details.this, EditProducts.class);
-                intent.putExtra("productname",productname);
+                Intent intent = new Intent(getApplicationContext(),EditProducts.class);
+                intent.putExtra("productname",itemname.get(position));
                 startActivity(intent);
             }
         });
@@ -84,7 +85,6 @@ public class product_details extends AppCompatActivity {
 
 
     private void getproducts(){
-
 
         final SimpleAdapter adapter = new SimpleAdapter(this,listitems,R.layout.products_list,new String[]{"FirstLine","SecondLine"},new int[]{R.id.topic,R.id.price});
         collectionReference = firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("products");
@@ -103,7 +103,10 @@ public class product_details extends AppCompatActivity {
                         resultmap.put("FirstLine", pair.getKey().toString());
                         resultmap.put("SecondLine", pair.getValue().toString());
                         listitems.add(resultmap);
+                        itemname.add(productname);
                         listView.setAdapter(adapter);
+
+
                     }
                 }else {
                     Log.d(TAG, "Error getting documents: ", task.getException());

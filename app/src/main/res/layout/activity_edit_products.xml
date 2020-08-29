@@ -10,12 +10,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:textSize="40sp"
+        android:textSize="20sp"
         android:id="@+id/name"
         android:textColor="#0C3502"
         tools:layout_editor_absoluteX="35dp"

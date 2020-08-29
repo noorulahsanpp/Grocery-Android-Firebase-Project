@@ -78,7 +78,7 @@ public class OrderDetails extends AppCompatActivity {
     private void getdata( String ordernumber){
         final List<HashMap<String,String>> listitems = new ArrayList<>();
         final SimpleAdapter adapter = new SimpleAdapter(this,listitems,R.layout.items_list,new String[]{"FirstLine","SecondLine"},new int[]{R.id.productname,R.id.quantity});
-    documentReference= firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("orders").document("111");
+    documentReference= firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("orders").document(ordernumber);
     documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
          @Override
          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
