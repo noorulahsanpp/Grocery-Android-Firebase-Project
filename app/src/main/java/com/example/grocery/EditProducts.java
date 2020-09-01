@@ -35,17 +35,17 @@ public class EditProducts extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+            super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-        getSupportActionBar().hide();
-        setContentView(R.layout.activity_edit_products);
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        initWidgets();
-        Intent intent = getIntent();
-        productname = intent.getExtras().get("productname").toString();
-      getData(productname);
-
+            requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
+            getSupportActionBar().hide();
+            setContentView(R.layout.activity_edit_products);
+            firebaseFirestore = FirebaseFirestore.getInstance();
+            initWidgets();
+            Intent intent = getIntent();
+            productname = intent.getExtras().get("productname").toString();
+          getData(productname);
+           setdata();
 
 
 
@@ -67,24 +67,34 @@ public class EditProducts extends AppCompatActivity {
     }
 
 
-   public void getData(String productname) {
-       documentReference= firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("orders").document(productname);
+
+  public void getData(String productname) {
+       documentReference= firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("products").document("p1");
        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
            @Override
            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                DocumentSnapshot document = task.getResult();
-               name = document.get("name").toString();
-               category = document.get("category").toString();
-               quantity = document.get("quantity").toString();
-               price = document.get("price").toString();
-               nameEt.setText(name);
-               priceET.setText(price);
-               quantityET.setText(quantity);
-               categoryET.setText(category);
+               if (document.exists()) {
+                   name = String.valueOf(document.get("name"));
+                   category = String.valueOf(document.get("category"));
+                   quantity = String.valueOf(document.get("quantity"));
+                   price = String.valueOf(document.get("price"));
 
-
-                }
+               } else {
+                   Toast.makeText(getApplicationContext(), "Failed. Please try again.", Toast.LENGTH_LONG).show();
+               }
+           }
             });
     }
+    public void setdata(){
+        nameEt.setText(name);
+        priceET.setText(price);
+        quantityET.setText(quantity);
+        categoryET.setText(category);
+
+    }
+
+
+
 
 }
