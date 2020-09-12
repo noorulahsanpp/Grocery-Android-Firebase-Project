@@ -19,6 +19,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.grocery.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,7 +54,7 @@ public class OrderDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_order_details);
         firebaseFirestore = FirebaseFirestore.getInstance();
         Intent intent = getIntent();
@@ -78,7 +79,7 @@ public class OrderDetails extends AppCompatActivity {
     private void getdata( String ordernumber){
         final List<HashMap<String,String>> listitems = new ArrayList<>();
         final SimpleAdapter adapter = new SimpleAdapter(this,listitems,R.layout.items_list,new String[]{"FirstLine","SecondLine"},new int[]{R.id.productname,R.id.quantity});
-    documentReference= firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("orders").document("111");
+    documentReference= firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("orders").document(ordernumber);
     documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
          @Override
          public void onComplete(@NonNull Task<DocumentSnapshot> task) {

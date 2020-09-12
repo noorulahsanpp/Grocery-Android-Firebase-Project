@@ -1,15 +1,21 @@
-package com.example.grocery;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.grocery.ui.orders;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.grocery.OrderDetails;
 import com.example.grocery.R;
@@ -31,7 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class ViewOrders extends AppCompatActivity {
+public class ViewOrderFragment extends Fragment {
+
 
     ListView vieworder;
     private static final String TAG = "Orders";
@@ -47,31 +54,30 @@ public class ViewOrders extends AppCompatActivity {
     final List<HashMap<String,String>> listitems = new ArrayList<>();
     final List<String> orderarray = new ArrayList<String>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_orders);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        View root = inflater.inflate(R.layout.activity_view_orders, container, false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
-        initwidgets();
-       getorders();
+        vieworder = root.findViewById(R.id.orders);
+        getorders();
         listclick();
 
+        return root;
     }
-    public void initwidgets(){
-        vieworder= findViewById(R.id.orders);
 
-    }
 
     private void listclick(){
 
-       vieworder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-           @Override
-           public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-               Intent intent = new Intent(getApplicationContext(), OrderDetails.class);
-               intent.putExtra("ordernumber",orderarray.get(i));
-               startActivity(intent);
+        vieworder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getContext(), OrderDetails.class);
+                intent.putExtra("ordernumber",orderarray.get(i));
+                startActivity(intent);
 
-           }
+            }
         });
 
     }
@@ -79,7 +85,7 @@ public class ViewOrders extends AppCompatActivity {
     private void getorders(){
 
 
-       final SimpleAdapter adapter = new SimpleAdapter(this,listitems,R.layout.order_list,new String[]{"FirstLine","SecondLine"},new int[]{R.id.orderno,R.id.date});
+        final SimpleAdapter adapter = new SimpleAdapter(getContext(),listitems,R.layout.order_list,new String[]{"FirstLine","SecondLine"},new int[]{R.id.orderno,R.id.date});
         collectionReference = firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("orders");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -87,7 +93,7 @@ public class ViewOrders extends AppCompatActivity {
                 if(task.isSuccessful()){
                     for (QueryDocumentSnapshot documentSnapshot :task.getResult()) {
                         orderno = documentSnapshot.get("orderno").toString();
-                                                 timestamp = documentSnapshot.getTimestamp("date");
+                        timestamp = documentSnapshot.getTimestamp("date");
                         Date date = timestamp.toDate();
                         String date1 = simpleDateFormat.format(date);
                         Map<Object, Object> productdetails = new HashMap<>();
@@ -99,7 +105,7 @@ public class ViewOrders extends AppCompatActivity {
                         resultmap.put("SecondLine", pair.getValue().toString());
                         listitems.add(resultmap);
                         orderarray.add(orderno);
-                       vieworder.setAdapter(adapter);
+                        vieworder.setAdapter(adapter);
 
                     }
 
@@ -112,6 +118,8 @@ public class ViewOrders extends AppCompatActivity {
 
             }});
     }}
+
+
 
 
 
