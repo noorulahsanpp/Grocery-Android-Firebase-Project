@@ -62,7 +62,7 @@ public class home extends AppCompatActivity {
             }
         });
 
-        addProduct.setOnClickListener(new View.OnClickListener() {
+   /*     addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(home.this, add_product.class));
@@ -74,7 +74,7 @@ public class home extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(home.this, product_details.class));
             }
-        });
+        });*/
 
         mapBT.setOnClickListener(new View.OnClickListener() {
             @Override

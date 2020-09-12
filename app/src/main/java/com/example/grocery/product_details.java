@@ -1,136 +1,101 @@
 package com.example.grocery;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.PersistableBundle;
+import com.bumptech.glide.Glide;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ImageView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.grocery.ui.product.ProductAdapter;
+import com.example.grocery.ui.product.Products;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 public class product_details extends AppCompatActivity {
     private static final String TAG = "product_details";
     public static final String MyPREFERENCES = "MyPrefs" ;
 
+    private RecyclerView recyclerView;
     SharedPreferences sharedPreferences;
-    private ListView listView;
     private Button add;
     private String productname, price, userId;
-    int images[] = {R.drawable.sabola ,R.drawable.ashirwad, R.drawable.eastern,R.drawable.lifebouy,R.drawable.nirapara};
-    private CollectionReference collectionReference;
-    private FirebaseFirestore firebaseFirestore;
-    final List<HashMap<String,String>> listitems = new ArrayList<>();
-    final List<String> itemname = new ArrayList<>();
+    private String images;
 
+       private FirebaseFirestore firebaseFirestore;
+
+    private CollectionReference collectionReference ;
+    private ProductAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.product_details);
-        getSharedPreference();
 
+        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setHasFixedSize(true);
         firebaseFirestore = FirebaseFirestore.getInstance();
+        collectionReference = firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("products");
         initwidgets();
-        add.setOnClickListener(new View.OnClickListener() {
+
+            add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), add_product.class));
             }
         });
         getproducts();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-                Intent intent = new Intent(getApplicationContext(),EditProducts.class);
-                intent.putExtra("productname",itemname.get(position));
-                startActivity(intent);
-            }
-        });
-
-
 
 
     }
 
     public void initwidgets(){
-        listView = findViewById(R.id.listview);
+
         add = findViewById(R.id.button);
     }
 
 
-    private void getproducts(){
+    private void getproducts() {
 
-        final SimpleAdapter adapter = new SimpleAdapter(this,listitems,R.layout.products_list,new String[]{"FirstLine","SecondLine"},new int[]{R.id.topic,R.id.price});
-        collectionReference = firebaseFirestore.collection("stores").document(userId+"").collection("products");
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for (QueryDocumentSnapshot documentSnapshot :task.getResult()) {
-                        productname = documentSnapshot.get("name").toString();
-                        price = "Rs"+documentSnapshot.get("price").toString()+"/-";
-                        Map<Object, Object> productdetails = new HashMap<>();
-                        productdetails.put(productname, price);
-                        Iterator it = productdetails.entrySet().iterator();
-                        HashMap<String, String> resultmap = new HashMap<>();
-                        Map.Entry pair = (Map.Entry) it.next();
-                        resultmap.put("FirstLine", pair.getKey().toString());
-                        resultmap.put("SecondLine", pair.getValue().toString());
-                        listitems.add(resultmap);
-                        itemname.add(productname);
-                        listView.setAdapter(adapter);
+        Query query =collectionReference.orderBy("name", Query.Direction.ASCENDING);
+               FirestoreRecyclerOptions<Products> options = new FirestoreRecyclerOptions.Builder<Products>()
+                .setQuery(query, Products.class)
+                .build();
 
+      //  adapter = new ProductAdapter(options);
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
-                    }
-                }else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-            }
-        }});
     }
-    public void getSharedPreference() {
-        sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-        userId = sharedPreferences.getString("userid", "");
-    }
+
+
     @Override
-    public void onBackPressed() {
-        startActivity(new Intent(product_details.this, home.class));
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 
 }
-
-
 
 

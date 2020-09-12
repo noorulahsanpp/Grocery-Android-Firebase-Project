@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.grocery.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -43,7 +44,7 @@ public class EditProducts extends AppCompatActivity {
             firebaseFirestore = FirebaseFirestore.getInstance();
             initWidgets();
             Intent intent = getIntent();
-            productname = intent.getExtras().get("productname").toString();
+            productname = intent.getExtras().get("name").toString();
           getData(productname);
            setdata();
 
