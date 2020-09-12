@@ -62,26 +62,20 @@ public class home extends AppCompatActivity {
             }
         });
 
-        addProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(home.this, add_product.class));
-            }
-        });
+//        addProduct.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(home.this, add_product.class));
+//            }
+//        });
+//
+//        productDetailsBT.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(home.this, product_details.class));
+//            }
+//        });
 
-        productDetailsBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(home.this, product_details.class));
-            }
-        });
-
-        mapBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(home.this, MapsActivity.class));
-            }
-        });
     }
 
     @Override
@@ -105,9 +99,9 @@ public class home extends AppCompatActivity {
     public void initWidgets(){
         signOutBT = findViewById(R.id.button3);
         userIdTV = findViewById(R.id.textView2);
-        addProduct = findViewById(R.id.button5);
-        productDetailsBT = findViewById(R.id.button6);
-        mapBT = findViewById(R.id.button7);
+//        addProduct = findViewById(R.id.button5);
+//        productDetailsBT = findViewById(R.id.button6);
+//        mapBT = findViewById(R.id.button7);
     }
     public void setSharedPreferences(){
         SharedPreferences.Editor editor = sharedPreferences.edit();

@@ -119,15 +119,14 @@
             android:text="SIGNUP"
             android:theme="@style/Button" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="650dp"
-            android:text="Already Registered? Click here"
-            android:textSize="18sp"
-            android:textColor="@color/blue" />
+        <Button
+            android:id="@+id/button9"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="300dp"
+            android:layout_marginTop="320dp"
+            android:background="@drawable/ic_action_location"
+            />
 
 
     </RelativeLayout>

@@ -95,6 +95,7 @@ public class OTP extends AppCompatActivity {
         @Override
         public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
             String code = phoneAuthCredential.getSmsCode();
+            verifyET.setText(code+"");
             if (code!=null){
                 verifyCode(code);
             }
