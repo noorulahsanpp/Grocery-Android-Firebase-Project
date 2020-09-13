@@ -9,6 +9,7 @@ import android.view.Menu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -21,10 +22,11 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
     private static final String TAG = "product_details2";
     public static final String MyPREFERENCES = "MyPrefs" ;
-    private String  userId;
+    private String userId;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSharedPreference();
+
+        mAuth = FirebaseAuth.getInstance();
+
+        if(mAuth.getCurrentUser()==null)
+        {
+            Intent intent = new Intent(MainActivity.this, Login.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        userId = mAuth.getCurrentUser().getUid();
+
+        setSharedPreferences();
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -59,9 +76,12 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-    public void getSharedPreference() {
+
+    public void setSharedPreferences(){
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-        userId = sharedPreferences.getString("userid", "");
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userid", userId);
+        editor.commit();
     }
 
 }

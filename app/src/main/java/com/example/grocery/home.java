@@ -20,10 +20,8 @@ public class home extends AppCompatActivity {
 
     private Button signOutBT, addProduct, productDetailsBT, mapBT;
     private TextView userIdTV;
-
     private String userId;
     private Boolean exit;
-
     public static final String MyPREFERENCES = "MyPrefs" ;
     SharedPreferences sharedPreferences;
 

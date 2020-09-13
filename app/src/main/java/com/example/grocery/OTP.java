@@ -134,7 +134,7 @@ public class OTP extends AppCompatActivity {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             if (documentSnapshot.exists()){
-                                Intent intent = new Intent(getApplicationContext(),home.class);
+                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();

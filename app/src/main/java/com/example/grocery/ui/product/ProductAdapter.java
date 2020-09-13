@@ -1,6 +1,8 @@
 package com.example.grocery.ui.product;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.content.Intent;
 import com.example.grocery.EditProducts;
@@ -19,6 +21,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.squareup.picasso.Picasso;
 
 public class ProductAdapter extends FirestoreRecyclerAdapter<Products, ProductAdapter.ProductHolder>{
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    private SharedPreferences sharedPreferences;
+
 
     List<String> itemname = new ArrayList<>();
 
@@ -29,11 +34,11 @@ public class ProductAdapter extends FirestoreRecyclerAdapter<Products, ProductAd
 
     @Override
     protected void onBindViewHolder(@NonNull ProductHolder holder, final int position, @NonNull final Products products) {
-        holder.price.setText(products.getPrice());
+        holder.price.setText(products.getPrice().toString());
         String productname = products.getName();
        holder.topic.setText(productname);
     itemname.add(productname);
-        String imageUrl = products.getImages();
+        String imageUrl = products.getImage();
         Picasso.get().load(imageUrl).into(holder.image);
     }
 

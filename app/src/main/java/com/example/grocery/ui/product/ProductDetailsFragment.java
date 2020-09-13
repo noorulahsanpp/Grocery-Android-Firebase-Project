@@ -1,5 +1,6 @@
 package com.example.grocery.ui.product;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,10 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.grocery.R;
 import com.example.grocery.add_product;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 public class ProductDetailsFragment extends Fragment {
 
 
@@ -42,16 +47,32 @@ public class ProductDetailsFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.product_details, container, false);
 
+        getSharedPreference();
+
         //     listView = root.findViewById(R.id.listview);
         add = root.findViewById(R.id.button);
         firebaseFirestore = FirebaseFirestore.getInstance();
         recyclerView = root.findViewById(R.id.recyclerview);
 
-
         firebaseFirestore = FirebaseFirestore.getInstance();
-        collectionReference = firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("products");
-
+        collectionReference = firebaseFirestore.collection("stores").document(userId+"").collection("products");
+//        firebaseFirestore.collection("stores").document(userId+"").collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()){
+//                    if (task.getResult().size()>0){
+//                        for (DocumentSnapshot documentSnapshot : task.getResult()){
+//                            getproducts();
+////                            adapter.startListening();
+//                        }
+//                    }
+//                }
+////
+//            }
+//        });
         getproducts();
+
+
        add= root.findViewById(R.id.button);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +85,10 @@ public class ProductDetailsFragment extends Fragment {
 return root;
     }
 
-
+public void getSharedPreference(){
+    sharedPreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+    userId = sharedPreferences.getString("userid", "");
+}
 
     private void getproducts(){
 
@@ -79,6 +103,8 @@ return root;
         recyclerView.setAdapter(adapter);
 
     }
+
+
 
     @Override
     public void onStart() {

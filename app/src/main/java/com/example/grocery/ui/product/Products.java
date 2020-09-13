@@ -1,25 +1,26 @@
 package com.example.grocery.ui.product;
 
 public class Products {
-    private  String price;
+    private String id;
+    private  Double price;
     private  String name;
-    private  String images;
+    private  String image;
 
     public Products(){
 
     }
-    public Products( String name, String price,String images){
-
+    public Products(String id, String name, Double price,String image){
+        this.id = id;
        this.name = name;
-        this.images = images;
+        this.image = image;
         this.price = price;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -31,11 +32,19 @@ public class Products {
         this.name = name;
     }
 
-    public String getImages() {
-        return images;
+    public String getImage() {
+        return image;
     }
 
-    public void setImages(String images) {
-        this.images = images;
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getId() {
+        return name;
+    }
+
+    public void setId(String id) {
+        this.name = id;
     }
 }
