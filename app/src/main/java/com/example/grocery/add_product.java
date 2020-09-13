@@ -156,7 +156,7 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
                 @Override
                 public void onSuccess(Void aVoid) {
                     progressDialog.dismiss();
-                    startActivity(new Intent(add_product.this, product_details.class));
+                    startActivity(new Intent(add_product.this, MainActivity.class));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -207,6 +207,7 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()){
+                            downloadImageUrl = task.getResult().toString();
                             Toast.makeText(add_product.this, "got imageuri successfully", Toast.LENGTH_LONG);
                             addProduct();
                         }
@@ -274,9 +275,9 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
         String item = parent.getItemAtPosition(i).toString();
-
+        pCategory = item;
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+//        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
 
     @Override

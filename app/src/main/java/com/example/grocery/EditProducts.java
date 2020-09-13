@@ -10,14 +10,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.grocery.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 public class EditProducts extends AppCompatActivity {
     private static final String TAG = "EditProduct";
@@ -36,7 +40,9 @@ public class EditProducts extends AppCompatActivity {
 
     private Button editBT, saveBT, deleteBT;
     private ProgressDialog progressDialog;
-    private String name, category, quantity, price,productname, userId;
+    private ImageView productImage;
+    private String name, category, quantity,productname, userId, imageUri, productId;
+    private Double price;
     private FirebaseFirestore firebaseFirestore;
     private DocumentReference documentReference;
     private SharedPreferences sharedPreferences;
@@ -55,6 +61,27 @@ public class EditProducts extends AppCompatActivity {
             productname = intent.getExtras().get("name").toString();
           getData(productname);
 
+          deleteBT.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                  deleteProduct();
+              }
+          });
+
+          saveBT.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                  getData();
+              }
+          });
+
+          editBT.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                  priceET.setEnabled(true);
+                  categoryET.setEnabled(true);
+              }
+          });
 
 
     }
@@ -69,8 +96,19 @@ public class EditProducts extends AppCompatActivity {
         editBT = findViewById(R.id.Edit);
         saveBT = findViewById(R.id.SAVE);
         deleteBT = findViewById(R.id.Delete);
+        productImage = findViewById(R.id.image1);
+
     }
 
+    public void deleteProduct(){
+        firebaseFirestore.collection("stores").document(userId+"").collection("products").document(productId+"").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Product successfully deleted", Toast.LENGTH_LONG);
+                startActivity(new Intent(EditProducts.this, MainActivity.class));
+            }
+        });
+    }
     private void getData(String productname){
         firebaseFirestore.collection("stores").document(userId+"").collection("products").whereEqualTo("name", productname+"").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -80,10 +118,12 @@ public class EditProducts extends AppCompatActivity {
                     return;
                 }
                 for (QueryDocumentSnapshot document : value) {
+                    productId = document.getId();
                     name = String.valueOf(document.get("name"));
                     category = String.valueOf(document.get("category"));
                     quantity = String.valueOf(document.get("quantity"));
-                    price = String.valueOf(document.get("price"));
+                    price = (Double) document.get("price");
+                    imageUri = String.valueOf(document.get("image"));
                 }
                 setData();
             }
@@ -92,12 +132,30 @@ public class EditProducts extends AppCompatActivity {
     }
 
 
+    public void getData(){
+        category = categoryET.getText().toString().trim();
+        price = Double.parseDouble(String.valueOf(priceET.getText()));
+        int newqty = 0;
+                newqty= Integer.parseInt(newET.getText().toString());
+                int qty = Integer.parseInt(quantity)+newqty;
+                quantity = String.valueOf(qty);
+        firebaseFirestore.collection("stores").document(userId+"").collection("products").document(productId+"").update(
+                "price", Double.parseDouble(String.valueOf(price)),
+                "category", category+"",
+                "quantity", Integer.parseInt(quantity)
+        );
+    }
 
     public void setData(){
         nameEt.setText(name);
-        priceET.setText(price);
+        priceET.setText(price+"");
         quantityET.setText(quantity);
         categoryET.setText(category);
+        newET.setText("0");
+        priceET.setEnabled(false);
+        categoryET.setEnabled(false);
+        quantityET.setEnabled(false);
+        Picasso.get().load(imageUri).into(productImage);
     }
 
     public void getSharedPreference(){
