@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
+//        mAuth.signOut();
         if(mAuth.getCurrentUser()==null)
         {
             Intent intent = new Intent(MainActivity.this, Login.class);
