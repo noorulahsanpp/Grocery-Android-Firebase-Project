@@ -34,6 +34,7 @@ public class home extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
 
         mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
 
         if(mAuth.getCurrentUser()==null)
         {

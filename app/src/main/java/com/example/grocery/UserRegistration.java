@@ -254,7 +254,9 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
     public void saveData() {
         try {
             DocumentReference product = firebaseFirestore.collection("stores").document(userId + "");
+            DocumentReference location = firebaseFirestore.collection("coordinates").document(userId+"");
             Map<String, Object> productinfo = new HashMap<>();
+            Map<String, Object> locationinfo = new HashMap<>();
             productinfo.put("storename", sName);
             productinfo.put("userid", userId);
             productinfo.put("category", sCategory);
@@ -265,7 +267,7 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
             product.set(productinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    startActivity(new Intent(UserRegistration.this, home.class));
+//                    startActivity(new Intent(UserRegistration.this, home.class));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -273,6 +275,15 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
                     Toast.makeText(UserRegistration.this, "Something went wrong. Please try again later.", Toast.LENGTH_SHORT).show();
                 }
             });
+            locationinfo.put("altitude", latitudeLOC);
+            locationinfo.put("longitude", longitudeLOC);
+            location.set(locationinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    startActivity(new Intent(UserRegistration.this, home.class));
+                }
+            });
+
         } catch (Exception e) {
             Log.d(TAG, "addProduct: " + e);
         }

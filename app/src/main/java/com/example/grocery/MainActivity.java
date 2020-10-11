@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mAuth = FirebaseAuth.getInstance();
-
         if(mAuth.getCurrentUser()==null)
         {
             Intent intent = new Intent(MainActivity.this, Login.class);
@@ -62,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }
         firebaseFirestore = FirebaseFirestore.getInstance();
         userId = mAuth.getCurrentUser().getUid();
+
 
         setSharedPreferences();
 
@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
