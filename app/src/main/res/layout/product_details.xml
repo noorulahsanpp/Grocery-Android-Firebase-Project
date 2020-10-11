@@ -25,8 +25,8 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="520dp"
-        android:layout_marginLeft="280dp"
+        android:layout_marginTop="560dp"
+        android:layout_marginLeft="310dp"
         android:src="@drawable/ic_action_add"
         android:backgroundTint="#1b8501"
         />

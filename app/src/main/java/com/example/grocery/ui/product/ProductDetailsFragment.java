@@ -54,7 +54,7 @@ public class ProductDetailsFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
         recyclerView = root.findViewById(R.id.recyclerview);
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
+
         collectionReference = firebaseFirestore.collection("stores").document(userId+"").collection("products");
 //        firebaseFirestore.collection("stores").document(userId+"").collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 //            @Override

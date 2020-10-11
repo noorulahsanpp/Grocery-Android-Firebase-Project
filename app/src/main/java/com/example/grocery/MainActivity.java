@@ -6,11 +6,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -18,15 +28,20 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
+import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private SharedPreferences sharedPreferences;
     private static final String TAG = "product_details2";
     public static final String MyPREFERENCES = "MyPrefs" ;
-    private String userId;
+
+    private String userId,name,image;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private ImageView Navimage;
+    private TextView storename;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +60,49 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
-
+        firebaseFirestore = FirebaseFirestore.getInstance();
         userId = mAuth.getCurrentUser().getUid();
 
         setSharedPreferences();
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+     navigationView = findViewById(R.id.nav_view);
+        setStoreDetails();
+    firebaseFirestore.collection("stores").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+          @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                      name = document.get("storename").toString();
+                    image = document.get("storeimage").toString();
+                   //storename.setText(name);
+                   Picasso.get().load(image).into(Navimage);
+          }
+
+           }
+       });
+
+
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override            public boolean onNavigationItemSelected(MenuItem item) {
+                if (item.getItemId() == R.id.nav_logout) {
+                    logout();
+                    drawer.closeDrawers(); // close nav bar
+                }
+                return false;
+            }   });
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_product, R.id.nav_order, R.id.nav_logout)
+                R.id.nav_product, R.id.nav_order)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-    }
 
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(navigationView, navController);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -84,4 +124,18 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    private void logout(){
+        mAuth.signOut();
+        Intent intent = new Intent(getApplicationContext(), Login.class);
+        Toast.makeText(getApplicationContext(),"logouted",Toast.LENGTH_LONG).show();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+        return;
+    }
+
+    private void setStoreDetails(){
+        storename = navigationView.getHeaderView(0).findViewById(R.id.nav_shopname);
+        Navimage = navigationView.getHeaderView(0).findViewById(R.id.nav_Image);
+    }
 }
