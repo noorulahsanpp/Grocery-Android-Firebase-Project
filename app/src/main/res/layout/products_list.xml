@@ -8,7 +8,7 @@
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
-    app:cardBackgroundColor="#FFFFE8"
+    app:cardBackgroundColor="#FFFFFF"
     >
 
     <RelativeLayout
@@ -17,8 +17,9 @@
         android:layout_height="150dp"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="130dp"
+            android:layout_height="140dp"
+            android:padding="8dp"
             android:src="@mipmap/ic_launcher"
             android:layout_centerVertical="true"
             android:id="@+id/itemimage"
@@ -33,14 +34,14 @@
             android:layout_centerVertical="true"
             android:textStyle="bold"
 
-            android:layout_marginLeft="120dp"
-            android:layout_marginRight="150dp"
+            android:layout_marginLeft="140dp"
+            android:layout_marginRight="120dp"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="270dp"
+            android:layout_marginLeft="300dp"
             android:layout_centerVertical="true"
             android:paddingRight="5sp"
             android:id="@+id/itemprice"

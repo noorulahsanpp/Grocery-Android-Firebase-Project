@@ -8,7 +8,7 @@
     </style>
 
     <style name="Button" parent="android:Widget.Button">
-        <item name="android:textColor">@color/headings</item>
+        <item name="android:textColor">@color/buttontext</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">23sp</item>
         <item name="android:width">300dp</item>

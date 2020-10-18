@@ -15,9 +15,9 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
+import android.widget.Toast;
+import android.widget.ImageView;
 import com.example.grocery.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,13 +31,13 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
-
+import android.widget.TextView;
 public class EditProducts extends AppCompatActivity {
     private static final String TAG = "EditProduct";
     public static final String MyPREFERENCES = "MyPrefs" ;
 
-    private EditText newET, priceET, quantityET, categoryET,nameEt;
-
+    private TextView  priceET, quantityET, categoryET,nameEt;
+    private EditText newEt;
     private Button editBT, saveBT, deleteBT;
     private ProgressDialog progressDialog;
     private ImageView productImage;
@@ -88,7 +88,7 @@ public class EditProducts extends AppCompatActivity {
 
     private void initWidgets() {
         Log.d(TAG, "initWidgets: Initialising widgets");
-        newET = findViewById(R.id.newquantity);
+        newEt = findViewById(R.id.newquantity);
         nameEt = findViewById(R.id.name);
         categoryET = findViewById(R.id.Category);
         priceET = findViewById(R.id.Price);
@@ -136,7 +136,7 @@ public class EditProducts extends AppCompatActivity {
         category = categoryET.getText().toString().trim();
         price = Double.parseDouble(String.valueOf(priceET.getText()));
         int newqty = 0;
-                newqty= Integer.parseInt(newET.getText().toString());
+                newqty= Integer.parseInt(newEt.getText().toString());
                 int qty = Integer.parseInt(quantity)+newqty;
                 quantity = String.valueOf(qty);
         firebaseFirestore.collection("stores").document(userId+"").collection("products").document(productId+"").update(
@@ -151,7 +151,7 @@ public class EditProducts extends AppCompatActivity {
         priceET.setText(price+"");
         quantityET.setText(quantity);
         categoryET.setText(category);
-        newET.setText("0");
+        newEt.setText("0");
         priceET.setEnabled(false);
         categoryET.setEnabled(false);
         quantityET.setEnabled(false);

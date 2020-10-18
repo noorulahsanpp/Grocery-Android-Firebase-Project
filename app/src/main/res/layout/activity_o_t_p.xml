@@ -61,7 +61,7 @@
             android:backgroundTint="#1b8501"
             android:padding="10dp"
             android:text="VERIFY"
-            android:textColor="@color/headings"
+            android:textColor="@color/buttontext"
             android:textSize="15dp" />
 
     </RelativeLayout>

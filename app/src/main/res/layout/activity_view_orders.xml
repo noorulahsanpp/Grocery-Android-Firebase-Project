@@ -10,14 +10,6 @@
     android:paddingTop="16dp"
     tools:context="ViewOrders">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textSize="40dp"
-        android:textColor="#0C3502"
-        android:text="Order Details"/>
-
 
     <ListView
         android:layout_width="match_parent"
