@@ -81,27 +81,28 @@ public class MainActivity extends AppCompatActivity {
 
            }
        });
-
-
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override            public boolean onNavigationItemSelected(MenuItem item) {
-                if (item.getItemId() == R.id.nav_logout) {
-                    logout();
-                    drawer.closeDrawers(); // close nav bar
-                }
-                return false;
-            }   });
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_product, R.id.nav_order)
+                R.id.nav_product, R.id.nav_order,R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                if (item.getItemId() == R.id.nav_logout) {
+                    logout();
+                    drawer.closeDrawers(); // close nav bar
+                }
+                return false;
+            }   });
+
 }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
     private void logout(){
         mAuth.signOut();
         Intent intent = new Intent(getApplicationContext(), Login.class);
-        Toast.makeText(getApplicationContext(),"logouted",Toast.LENGTH_LONG).show();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
