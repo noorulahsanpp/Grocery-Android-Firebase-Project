@@ -28,34 +28,34 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class ProductDetailsFragment extends Fragment {
 
 
-    private static final String TAG = "product_details2";
-    public static final String MyPREFERENCES = "MyPrefs";
+  private static final String TAG = "product_details2";
+  public static final String MyPREFERENCES = "MyPrefs";
 
-    SharedPreferences sharedPreferences;
-    private RecyclerView recyclerView;
-    private com.google.android.material.floatingactionbutton.FloatingActionButton add;
-    private String productname, price, userId;
-    private String images;
-    private FirebaseFirestore firebaseFirestore;
-    private CollectionReference collectionReference;
-    private ProductAdapter adapter;
-
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+  SharedPreferences sharedPreferences;
+  private RecyclerView recyclerView;
+  private com.google.android.material.floatingactionbutton.FloatingActionButton add;
+  private String productname, price, userId;
+  private String images;
+  private FirebaseFirestore firebaseFirestore;
+  private CollectionReference collectionReference;
+  private ProductAdapter adapter;
 
 
-        View root = inflater.inflate(R.layout.product_details, container, false);
-
-        getSharedPreference();
-
-        //     listView = root.findViewById(R.id.listview);
-        add = root.findViewById(R.id.button);
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        recyclerView = root.findViewById(R.id.recyclerview);
+  public View onCreateView(@NonNull LayoutInflater inflater,
+                           ViewGroup container, Bundle savedInstanceState) {
 
 
-        collectionReference = firebaseFirestore.collection("stores").document(userId+"").collection("products");
+    View root = inflater.inflate(R.layout.product_details, container, false);
+
+    getSharedPreference();
+
+    //     listView = root.findViewById(R.id.listview);
+    add = root.findViewById(R.id.button);
+    firebaseFirestore = FirebaseFirestore.getInstance();
+    recyclerView = root.findViewById(R.id.recyclerview);
+
+
+    collectionReference = firebaseFirestore.collection("stores").document(userId+"").collection("products");
 //        firebaseFirestore.collection("stores").document(userId+"").collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 //            @Override
 //            public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -70,53 +70,53 @@ public class ProductDetailsFragment extends Fragment {
 ////
 //            }
 //        });
-        getproducts();
+    getproducts();
 
 
-       add= root.findViewById(R.id.button);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), add_product.class));
-            }
-        });
+    add= root.findViewById(R.id.button);
+    add.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startActivity(new Intent(getContext(), add_product.class));
+      }
+    });
 
 
-return root;
-    }
+    return root;
+  }
 
-public void getSharedPreference(){
+  public void getSharedPreference(){
     sharedPreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
     userId = sharedPreferences.getString("userid", "");
-}
+  }
 
-    private void getproducts(){
+  private void getproducts(){
 
-        Query query =collectionReference.orderBy("name", Query.Direction.ASCENDING);
-        FirestoreRecyclerOptions<Products> options = new FirestoreRecyclerOptions.Builder<Products>()
-                .setQuery(query, Products.class)
-                .build();
+    Query query =collectionReference.orderBy("name", Query.Direction.ASCENDING);
+    FirestoreRecyclerOptions<Products> options = new FirestoreRecyclerOptions.Builder<Products>()
+            .setQuery(query, Products.class)
+            .build();
 
-        adapter = new ProductAdapter(options);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+    adapter = new ProductAdapter(options);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    recyclerView.setAdapter(adapter);
 
-    }
+  }
 
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
+  @Override
+  public void onStart() {
+    super.onStart();
+    adapter.startListening();
+  }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
+  @Override
+  public void onStop() {
+    super.onStop();
+    adapter.stopListening();
+  }
 
 }
 

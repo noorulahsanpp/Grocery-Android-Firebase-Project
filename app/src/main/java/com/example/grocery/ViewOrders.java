@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -32,15 +34,15 @@ import java.util.List;
 import java.util.Map;
 
 public class ViewOrders extends AppCompatActivity {
-
+    public static final String MyPREFERENCES = "MyPrefs";
     ListView vieworder;
     private static final String TAG = "Orders";
     private DocumentReference documentReference;
     private CollectionReference collectionReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private String orderno;
-
+    private String orderno,userId;
+    private SharedPreferences sharedPreferences;
 
     private Timestamp timestamp;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -52,6 +54,7 @@ public class ViewOrders extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_orders);
         firebaseFirestore = FirebaseFirestore.getInstance();
+        getSharedPreference();
         initwidgets();
        getorders();
         listclick();
@@ -80,14 +83,14 @@ public class ViewOrders extends AppCompatActivity {
 
 
        final SimpleAdapter adapter = new SimpleAdapter(this,listitems,R.layout.order_list,new String[]{"FirstLine","SecondLine"},new int[]{R.id.orderno,R.id.date});
-        collectionReference = firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("orders");
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        collectionReference = firebaseFirestore.collection("stores").document(userId).collection("order");
+        collectionReference.whereEqualTo("status", "order placed").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     for (QueryDocumentSnapshot documentSnapshot :task.getResult()) {
-                        orderno = documentSnapshot.get("orderno").toString();
-                                                 timestamp = documentSnapshot.getTimestamp("date");
+                        orderno = collectionReference.document().getId();
+                        timestamp = documentSnapshot.getTimestamp("date");
                         Date date = timestamp.toDate();
                         String date1 = simpleDateFormat.format(date);
                         Map<Object, Object> productdetails = new HashMap<>();
@@ -111,7 +114,12 @@ public class ViewOrders extends AppCompatActivity {
 
 
             }});
-    }}
+    }
+    public void getSharedPreference(){
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        userId = sharedPreferences.getString("userid", "");
+    }
+}
 
 
 

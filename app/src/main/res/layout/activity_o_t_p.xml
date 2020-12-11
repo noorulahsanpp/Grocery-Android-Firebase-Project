@@ -22,22 +22,22 @@
 
 
         <TextView
-            android:layout_marginTop="140dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
             android:text="Code Verification"
-            android:textSize="17dp"
-            android:textColor="#092502"/>
+            android:textColor="#092502"
+            android:textSize="17dp" />
+
         <TextView
             android:layout_width="350dp"
-            android:layout_marginTop="180dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:textColor="#605D5D"
+            android:layout_marginTop="180dp"
             android:gravity="center"
-            android:text="Please enter the verification code send to your registered phone number"/>
-
+            android:text="Please enter the verification code send to your registered phone number"
+            android:textColor="#605D5D" />
 
 
         <EditText
@@ -46,9 +46,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="240dp"
+            android:background="@drawable/edittextborder"
             android:hint="Enter OTP"
             android:inputType="textPersonName"
-            android:background="@drawable/edittextborder"
             android:theme="@style/EditText" />
 
         <Button

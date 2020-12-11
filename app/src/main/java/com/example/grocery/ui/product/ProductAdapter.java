@@ -34,10 +34,10 @@ public class ProductAdapter extends FirestoreRecyclerAdapter<Products, ProductAd
 
     @Override
     protected void onBindViewHolder(@NonNull ProductHolder holder, final int position, @NonNull final Products products) {
-        holder.price.setText(products.getPrice().toString());
+        holder.price.setText("₹"+products.getPrice().toString());
         String productname = products.getName();
        holder.topic.setText(productname);
-    itemname.add(productname);
+        itemname.add(productname);
         String imageUrl = products.getImage();
         Picasso.get().load(imageUrl).into(holder.image);
     }
@@ -62,11 +62,14 @@ public class ProductAdapter extends FirestoreRecyclerAdapter<Products, ProductAd
             public ProductHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(view.getContext(),EditProducts.class);
-                    i.putExtra("name",itemname.get(getAdapterPosition()));
-                    view.getContext().startActivity(i);
+
+                        Intent i = new Intent(view.getContext(), EditProducts.class);
+                        i.putExtra("name", itemname.get(getAdapterPosition()));
+                        view.getContext().startActivity(i);
+
                 }
             });
 

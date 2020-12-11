@@ -16,76 +16,76 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 public class product_details extends AppCompatActivity {
-    private static final String TAG = "product_details";
-    public static final String MyPREFERENCES = "MyPrefs" ;
+  private static final String TAG = "product_details";
+  public static final String MyPREFERENCES = "MyPrefs" ;
 
-    private RecyclerView recyclerView;
-    SharedPreferences sharedPreferences;
-    private Button add;
-    private String productname, price, userId;
-    private String image;
+  private RecyclerView recyclerView;
+  SharedPreferences sharedPreferences;
+  private Button add;
+  private String productname, price, userId;
+  private String image;
 
-       private FirebaseFirestore firebaseFirestore;
+  private FirebaseFirestore firebaseFirestore;
 
-    private CollectionReference collectionReference ;
-    private ProductAdapter adapter;
+  private CollectionReference collectionReference ;
+  private ProductAdapter adapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.product_details);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.product_details);
 
-        recyclerView = findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setHasFixedSize(true);
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        collectionReference = firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("products");
-        initwidgets();
+    recyclerView = findViewById(R.id.recyclerview);
+    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+    recyclerView.setHasFixedSize(true);
+    firebaseFirestore = FirebaseFirestore.getInstance();
+    collectionReference = firebaseFirestore.collection("stores").document("lnFz0deqnAJ6miENaL01").collection("products");
+    initwidgets();
 
-            add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), add_product.class));
-            }
-        });
-        getproducts();
-
-
-    }
-
-    public void initwidgets(){
-
-        add = findViewById(R.id.button);
-    }
+    add.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        startActivity(new Intent(getApplicationContext(), add_product.class));
+      }
+    });
+    getproducts();
 
 
-    private void getproducts() {
+  }
 
-        Query query =collectionReference.orderBy("name", Query.Direction.ASCENDING);
-               FirestoreRecyclerOptions<Products> options = new FirestoreRecyclerOptions.Builder<Products>()
-                .setQuery(query, Products.class)
-                .build();
+  public void initwidgets(){
 
-      //  adapter = new ProductAdapter(options);
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-    }
+    add = findViewById(R.id.button);
+  }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
+  private void getproducts() {
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
+    Query query =collectionReference.orderBy("name", Query.Direction.ASCENDING);
+    FirestoreRecyclerOptions<Products> options = new FirestoreRecyclerOptions.Builder<Products>()
+            .setQuery(query, Products.class)
+            .build();
+
+    //  adapter = new ProductAdapter(options);
+    RecyclerView recyclerView = findViewById(R.id.recyclerview);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    recyclerView.setAdapter(adapter);
+
+  }
+
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    adapter.startListening();
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    adapter.stopListening();
+  }
 
 }
 

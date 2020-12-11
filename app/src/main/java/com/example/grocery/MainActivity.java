@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.Menu;
 
 
+import com.example.grocery.ui.orders.ViewOrderFragment;
+import com.example.grocery.ui.product.ProductDetailsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "product_details2";
     public static final String MyPREFERENCES = "MyPrefs" ;
 
-    private String userId,name,image;
+    private String userId,name,image,details;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
     private ImageView Navimage;
@@ -73,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                      name = document.get("storename").toString();
+                      name = document.get("storename").toString()+("\n")+document.get("category").toString()+("\n")+document.get("location").toString()+(" ")+document.get("phone").toString();;
                     image = document.get("storeimage").toString();
-                   //storename.setText(name);
+                   storename.setText(name);
                    Picasso.get().load(image).into(Navimage);
           }
 
@@ -93,15 +95,24 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
 
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                if (item.getItemId() == R.id.nav_logout) {
-                    logout();
-                    drawer.closeDrawers(); // close nav bar
-                }
-                return false;
-            }   });
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//
+//            @Override
+//            public boolean onNavigationItemSelected(MenuItem item) {
+//                if (item.getItemId() == R.id.nav_logout) {
+//                    logout();
+//                    drawer.closeDrawers(); // close nav bar
+//                }
+//               else if(item.getItemId() == R.id.nav_product){
+//
+//
+//                }
+//                else if(item.getItemId() == R.id.nav_order){
+//
+//
+//                }
+//                return false;
+//            }   });
 
 }
     @Override

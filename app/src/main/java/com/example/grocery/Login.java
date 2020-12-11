@@ -27,7 +27,7 @@ public class Login extends AppCompatActivity {
 
     private static final String TAG = "Login";
     public static final String MyPREFERENCES = "MyPrefs" ;
-
+    private TextView signUpTv;
     private EditText phoneET;
     private Button registerBT;
     private String sPhone;
@@ -37,10 +37,15 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
-
+        signUpTv = findViewById(R.id.signupTv);
         phoneET = findViewById(R.id.phone);
         registerBT = findViewById(R.id.button8);
-
+        signUpTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), UserRegistration.class));
+            }
+        });
         registerBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
