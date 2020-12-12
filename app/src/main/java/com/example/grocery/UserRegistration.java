@@ -318,7 +318,7 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
     nameET = findViewById(R.id.name);
     locationET = findViewById(R.id.location);
     phoneET = findViewById(R.id.phone);
-    phoneET.setEnabled(false);
+  //  phoneET.setEnabled(false);
     photo = findViewById(R.id.image);
     categoryET = findViewById(R.id.category);
     ownerNAmeET = findViewById(R.id.ownername);
@@ -339,6 +339,8 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
     categories.add("Electronics");
     categories.add("Home Appliances");
     categories.add("Fruits and vegetables");
+    categories.add("Restaurent");
+    categories.add("Bakery");
 
     ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

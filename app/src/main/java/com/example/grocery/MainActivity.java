@@ -86,33 +86,17 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_product, R.id.nav_order,R.id.nav_logout)
+                R.id.nav_product, R.id.nav_order)
                 .setDrawerLayout(drawer)
                 .build();
-
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
 
 
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//
-//            @Override
-//            public boolean onNavigationItemSelected(MenuItem item) {
-//                if (item.getItemId() == R.id.nav_logout) {
-//                    logout();
-//                    drawer.closeDrawers(); // close nav bar
-//                }
-//               else if(item.getItemId() == R.id.nav_product){
-//
-//
-//                }
-//                else if(item.getItemId() == R.id.nav_order){
-//
-//
-//                }
-//                return false;
-//            }   });
+
+
+
 
 }
     @Override
@@ -121,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.logout) {
+            logout();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
     @Override
