@@ -9,17 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:text="Add product"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"
-        android:textSize="40sp"
-        android:textColor="#0C3502"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="53dp"
-        tools:ignore="MissingConstraints" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:text="Add product"
+            android:layout_marginTop="40dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="40sp"
+            android:textColor="#0C3502"
+            tools:layout_editor_absoluteX="35dp"
+            tools:layout_editor_absoluteY="53dp"
+            tools:ignore="MissingConstraints" />
 
         <ImageView
             android:id="@+id/image"

@@ -56,20 +56,7 @@ public class ProductDetailsFragment extends Fragment {
 
 
     collectionReference = firebaseFirestore.collection("stores").document(userId+"").collection("products");
-//        firebaseFirestore.collection("stores").document(userId+"").collection("products").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()){
-//                    if (task.getResult().size()>0){
-//                        for (DocumentSnapshot documentSnapshot : task.getResult()){
-//                            getproducts();
-////                            adapter.startListening();
-//                        }
-//                    }
-//                }
-////
-//            }
-//        });
+
     getproducts();
 
 

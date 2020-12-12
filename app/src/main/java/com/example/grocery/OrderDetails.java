@@ -24,7 +24,10 @@ import android.widget.Toast;
 
 import com.example.grocery.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,6 +38,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,6 +65,7 @@ public class OrderDetails extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private SharedPreferences sharedPreferences;
     private FirebaseFirestore firebaseFirestore;
+    private Timestamp date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +78,44 @@ public class OrderDetails extends AppCompatActivity {
         initwidgets();
         getdata(ordernumber);
 
+order.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        setcompletedorder();
+        collectionReference = firebaseFirestore.collection("stores").document(userId).collection("order");
+        collectionReference.document(ordernumber)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
 
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+        Toast.makeText(getApplicationContext(), "Your Order is placed.", Toast.LENGTH_LONG).show();
+        finish();
+    }
+});
 
     }
+public void setcompletedorder(){
+    collectionReference = firebaseFirestore.collection("stores").document(userId).collection("completedoeder");
+    Map<String, Object> products = new HashMap<>();
+    products.put("name", name);
+    products.put("itemno", quantity);
+    products.put("date", date);
+    products.put("image", images);
+    products.put("price", prices);
+    products.put("status", "order ready");
+    collectionReference.document().set(products);
+
+}
+
     private void initwidgets(){
         name = findViewById(R.id.customer);
         phone = findViewById(R.id.phoneno);
@@ -104,6 +144,7 @@ public class OrderDetails extends AppCompatActivity {
                             quantity =(ArrayList<String>) document.get("itemno");
                             images =(ArrayList<String>) document.get("image");
                             prices =(ArrayList<String>) document.get("price");
+                            date = document.getTimestamp("date");
 
                         }
                     }
