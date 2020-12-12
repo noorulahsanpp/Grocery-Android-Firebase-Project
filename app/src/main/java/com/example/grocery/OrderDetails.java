@@ -127,6 +127,7 @@ public void setcompletedorder(){
         paymentstatus = findViewById(R.id.paystatus);
         total = findViewById(R.id.total);
         orderno.setText(ordernumber);
+
     }
 
 
@@ -141,6 +142,8 @@ public void setcompletedorder(){
                         String status = document.get("status").toString();
                         if (status.equals("order placed")) {
                             itemname =(ArrayList<String>) document.get("name");
+                            customer= (String) document.get("username");
+                            phoneno = (String) document.get("phone");
                             quantity =(ArrayList<String>) document.get("itemno");
                             images =(ArrayList<String>) document.get("image");
                             prices =(ArrayList<String>) document.get("price");
@@ -149,6 +152,8 @@ public void setcompletedorder(){
                         }
                     }
                 }
+                phone.setText(phoneno);
+                name.setText(customer);
                 OrderAdapter adapter = new OrderAdapter(itemname,quantity,images,prices);
 
                 orderlist.setAdapter(adapter);

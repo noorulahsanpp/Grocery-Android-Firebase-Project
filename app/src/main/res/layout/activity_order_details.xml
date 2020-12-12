@@ -41,7 +41,7 @@
 </androidx.cardview.widget.CardView>
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="180dp"
     android:id="@+id/detailscaard"
     android:layout_marginTop="10dp">
     <TextView
@@ -86,7 +86,7 @@ android:textColor="@color/black"
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:text="Phone Number      "
             android:textSize="16dp"
             android:layout_marginLeft="20dp"/>
@@ -94,14 +94,14 @@ android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:id="@+id/phoneno"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:textSize="16dp"
 android:textColor="@color/black"
             android:layout_marginLeft="180dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="70dp"
             android:text="Total Amount         "
             android:textSize="16dp"
             android:layout_marginLeft="20dp"/>
@@ -109,14 +109,14 @@ android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:id="@+id/total"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="70dp"
             android:textSize="16dp"
             android:textColor="@color/black"
             android:layout_marginLeft="180dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="100dp"
             android:text="Payment Status        "
             android:textSize="16dp"
             android:layout_marginLeft="20dp"/>
@@ -124,7 +124,7 @@ android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:id="@+id/paystatus"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="100dp"
             android:textSize="18dp"
             android:textStyle="bold"
             android:textColor="@color/black"
