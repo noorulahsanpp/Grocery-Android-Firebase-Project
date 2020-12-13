@@ -59,6 +59,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:2.3.0"
     implementation 'com.firebaseui:firebase-ui-firestore:6.1.0'
     implementation "androidx.navigation:navigation-ui:2.3.0"
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    api 'com.theartofdev.edmodo:android-image-cropper:2.5.+'
     annotationProcessor 'androidx.room:room-compiler:2.2.2'
 }

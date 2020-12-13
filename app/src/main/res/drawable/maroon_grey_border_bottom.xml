@@ -13,7 +13,7 @@
                 android:width="3dp"
                 android:color="#8E8D8D" />
             <solid android:color="@color/grey" />
-</shape>
+        </shape>
 
     </item>
 </layer-list>

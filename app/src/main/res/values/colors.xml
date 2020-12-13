@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#1b8501</color>
-    <color name="colorPrimaryDark">#26531B</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="grey">#D8D8D8</color>
-    <color name="maroon">#9C1B61</color>
-    <color name="blue">#5656A3</color>
-    <color name="black">#000000</color>
-    <color name="buttontext">#D3D8DD</color>
-    <color name="silver">#747F8A</color>
-    <color name="lightsilver">#DBDFE4</color>
-    <color name="spinnercolor">#E6E6E8</color>
-    <color name="red">#85011B</color>
-
-</resources>
+<?xml version="1.0" encoding="utf-8"?><resources>    <color name="colorPrimary">#1b8501</color>    <color name="colorPrimaryDark">#26531B</color>    <color name="colorAccent">#03DAC5</color>    <color name="grey">#D8D8D8</color>    <color name="maroon">#9C1B61</color>    <color name="blue">#5656A3</color>    <color name="black">#000000</color>    <color name="buttontext">#D3D8DD</color>    <color name="silver">#747F8A</color>    <color name="lightsilver">#DBDFE4</color>    <color name="spinnercolor">#E6E6E8</color>    <color name="red">#85011B</color></resources>

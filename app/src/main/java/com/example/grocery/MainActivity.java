@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.Menu;
 
 
+import com.example.grocery.ui.orders.ViewOrderFragment;
+import com.example.grocery.ui.product.ProductDetailsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "product_details2";
     public static final String MyPREFERENCES = "MyPrefs" ;
 
-    private String userId,name,image;
+    private String userId,name,image,details;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
     private ImageView Navimage;
@@ -74,35 +76,29 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                      name = document.get("storename").toString();
+                      name = document.get("storename").toString()+("\n")+document.get("category").toString()+("\n")+document.get("location").toString()+(" ")+document.get("phone").toString();;
                     image = document.get("storeimage").toString();
-                   //storename.setText(name);
+                   storename.setText(name);
                    Picasso.get().load(image).into(Navimage);
           }
 
            }
        });
-
-
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override            public boolean onNavigationItemSelected(MenuItem item) {
-                if (item.getItemId() == R.id.nav_logout) {
-                    logout();
-                    drawer.closeDrawers(); // close nav bar
-                }
-                return false;
-            }   });
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_product, R.id.nav_order)
                 .setDrawerLayout(drawer)
                 .build();
-
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+
+
+
+
+
+
 }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,6 +106,14 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.logout) {
+            logout();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
     @Override
@@ -129,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
     private void logout(){
         mAuth.signOut();
         Intent intent = new Intent(getApplicationContext(), Login.class);
-        Toast.makeText(getApplicationContext(),"logouted",Toast.LENGTH_LONG).show();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

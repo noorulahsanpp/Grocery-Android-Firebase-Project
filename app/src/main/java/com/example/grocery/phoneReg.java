@@ -10,27 +10,27 @@ import android.widget.EditText;
 
 public class phoneReg extends AppCompatActivity {
 
-    private EditText phoneET;
-    private Button registerBT;
-    private String sPhone;
+  private EditText phoneET;
+  private Button registerBT;
+  private String sPhone;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_phone_reg);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_phone_reg);
 
-        phoneET = findViewById(R.id.phone);
-        registerBT = findViewById(R.id.button);
+    phoneET = findViewById(R.id.phone);
+    registerBT = findViewById(R.id.button);
 
-        registerBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sPhone = "+91"+phoneET.getText().toString().trim();
-                Intent intent = new Intent(getApplicationContext(),OTP.class);
-                intent.putExtra("phoneNo", sPhone);
-                startActivity(intent);
-            }
-        });
+    registerBT.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        sPhone = "+91"+phoneET.getText().toString().trim();
+        Intent intent = new Intent(getApplicationContext(),OTP.class);
+        intent.putExtra("phoneNo", sPhone);
+        startActivity(intent);
+      }
+    });
 
-    }
+  }
 }

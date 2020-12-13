@@ -44,9 +44,17 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="400dp"
             android:background="@drawable/button_style"
-            android:backgroundTint="#1b8501"
             android:text="Login" />
 
-
+        <TextView
+            android:id="@+id/signupTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button8"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:text="New User?Click here"
+            android:textColor="@color/blue"
+            />
     </RelativeLayout>
 </LinearLayout>

@@ -20,60 +20,60 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class forgotpassword extends AppCompatActivity {
 
-    private EditText emailEt;
-    private Button send;
-    private FirebaseAuth mAuth;
-    private ProgressDialog progressdialog;
+  private EditText emailEt;
+  private Button send;
+  private FirebaseAuth mAuth;
+  private ProgressDialog progressdialog;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-        getSupportActionBar().hide();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgotpassword);
-        popup();
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
+    getSupportActionBar().hide();
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_forgotpassword);
+    popup();
 
-        emailEt = findViewById(R.id.emailEt);
-        send = findViewById(R.id.sendpswd);
+    emailEt = findViewById(R.id.emailEt);
+    send = findViewById(R.id.sendpswd);
 
 
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailEt.getText().toString();
-                forgotpswd(email);
-            }
-        });
-    }
+    send.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        String email = emailEt.getText().toString();
+        forgotpswd(email);
+      }
+    });
+  }
 
-    private void forgotpswd(String email) {
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                progressdialog.show();
-                if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Password send to your email", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Email not exist", Toast.LENGTH_LONG).show();
-                }
+  private void forgotpswd(String email) {
+    mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+      @Override
+      public void onComplete(@NonNull Task<Void> task) {
+        progressdialog.show();
+        if (task.isSuccessful()) {
+          Toast.makeText(getApplicationContext(), "Password send to your email", Toast.LENGTH_LONG).show();
+        } else {
+          Toast.makeText(getApplicationContext(), "Email not exist", Toast.LENGTH_LONG).show();
+        }
 
-            }
-        });
-    }
+      }
+    });
+  }
 
-    private void popup() {
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
+  private void popup() {
+    DisplayMetrics dm = new DisplayMetrics();
+    getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
+    int width = dm.widthPixels;
+    int height = dm.heightPixels;
 
-        getWindow().setLayout((int) (width * .9), (int) (height * .6));
+    getWindow().setLayout((int) (width * .9), (int) (height * .6));
 
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.gravity = Gravity.CENTER;
-        params.x = 0;
-        params.y = -20;
-        getWindow().setAttributes(params);
-    }
+    WindowManager.LayoutParams params = getWindow().getAttributes();
+    params.gravity = Gravity.CENTER;
+    params.x = 0;
+    params.y = -20;
+    getWindow().setAttributes(params);
+  }
 }

@@ -32,9 +32,7 @@
             android:textSize="17sp"
             android:textColor="@color/black"
             android:layout_centerVertical="true"
-            android:textStyle="bold"
-
-            android:layout_marginLeft="140dp"
+                       android:layout_marginLeft="140dp"
             android:layout_marginRight="120dp"
             />
 
@@ -45,7 +43,9 @@
             android:layout_centerVertical="true"
             android:paddingRight="5sp"
             android:id="@+id/itemprice"
-            android:textSize="15sp"/>
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
