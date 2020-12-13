@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.grocery.R;
+import com.example.grocery.ui.orders.ViewOrderFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -104,9 +105,10 @@ order.setOnClickListener(new View.OnClickListener() {
 
     }
 public void setcompletedorder(){
-    collectionReference = firebaseFirestore.collection("stores").document(userId).collection("completedoeder");
+    collectionReference = firebaseFirestore.collection("stores").document(userId).collection("completedorder");
     Map<String, Object> products = new HashMap<>();
-    products.put("name", name);
+    products.put("name", itemname);
+    products.put("customer", customer);
     products.put("itemno", quantity);
     products.put("date", date);
     products.put("image", images);

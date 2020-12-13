@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,22 +42,25 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 public class ViewOrderFragment extends Fragment {
 
-    public static final String MyPREFERENCES = "MyPrefs";
-    ListView vieworder;
-    private static final String TAG = "Orders";
-    private DocumentReference documentReference;
-    private CollectionReference collectionReference;
+    public  final String MyPREFERENCES = "MyPrefs";
+    static ListView vieworder;
+    private final String TAG = "Orders";
+    private  DocumentReference documentReference;
+    private  CollectionReference collectionReference;
     private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
-    private String userId,orderno;
+    private    FirebaseFirestore firebaseFirestore;
+    private   String userId,orderno;
     private SharedPreferences sharedPreferences;
-
-    private Timestamp timestamp;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    final List<HashMap<String, String>> listitems = new ArrayList<>();
-    final List<String> orderarray = new ArrayList<String>();
+    Date date;
+    private  Timestamp timestamp;
+    static   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    final  List<HashMap<String, String>> listitems = new ArrayList<>();
+    final   List<String> orderarray = new ArrayList<String>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +69,9 @@ public class ViewOrderFragment extends Fragment {
         getSharedPreference();
         firebaseFirestore = FirebaseFirestore.getInstance();
         vieworder = root.findViewById(R.id.orders);
-        getorders(userId);
+        collectionReference = firebaseFirestore.collection("stores").document(userId).collection("order");
+
+                    getorders();
         listclick();
 
         return root;
@@ -73,25 +79,23 @@ public class ViewOrderFragment extends Fragment {
 
 
     private void listclick() {
-
         vieworder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getContext(), OrderDetails.class);
-                intent.putExtra("ordernumber", orderarray.get(i));
+                intent.putExtra("ordernumber",orderarray.get(i));
                 startActivity(intent);
+                           }
 
-            }
+
         });
 
     }
 
-    private void getorders(String userId) {
-
-
+    public void getorders() {
         final SimpleAdapter adapter = new SimpleAdapter(getContext(), listitems, R.layout.order_list, new String[]{"FirstLine", "SecondLine"}, new int[]{R.id.orderno, R.id.date});
-        collectionReference = firebaseFirestore.collection("stores").document(userId).collection("order");
-        collectionReference.whereEqualTo("status", "order placed").addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+        collectionReference.whereEqualTo("status", "order placed").orderBy("date",Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
@@ -99,30 +103,33 @@ public class ViewOrderFragment extends Fragment {
                     return;
                 }
                 for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        orderno = document.getId();
-                        timestamp = document.getTimestamp("date");
-                           Date date = timestamp.toDate();
-                        String date1 = simpleDateFormat.format(date);
-                        Map<Object, Object> productdetails = new HashMap<>();
-                        productdetails.put(orderno, date1);
-                        Iterator it = productdetails.entrySet().iterator();
-                        HashMap<String, String> resultmap = new HashMap<>();
-                        Map.Entry pair = (Map.Entry) it.next();
-                        resultmap.put("FirstLine", pair.getKey().toString());
-                        resultmap.put("SecondLine", pair.getValue().toString());
-                        listitems.add(resultmap);
-                        orderarray.add(orderno);
-                        vieworder.setAdapter(adapter);
+                    orderno = document.getId();
+                    timestamp = document.getTimestamp("date");
+                    date = timestamp.toDate();
+                    String date1 = simpleDateFormat.format(date);
+                    Map<Object, Object> productdetails = new HashMap<>();
+                    productdetails.put(orderno, date1);
+                    Iterator it = productdetails.entrySet().iterator();
+                    HashMap<String, String> resultmap = new HashMap<>();
+                    Map.Entry pair = (Map.Entry) it.next();
+                    resultmap.put("FirstLine", pair.getKey().toString());
+                    resultmap.put("SecondLine", pair.getValue().toString());
+                    listitems.add(resultmap);
+                    orderarray.add(orderno);
+                }
 
-                    }
-             }
 
+                vieworder.setAdapter(adapter);
+            }
         });
+
+
     }
     public void getSharedPreference(){
         sharedPreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         userId = sharedPreferences.getString("userid", "");
     }
+
 }
 
 
