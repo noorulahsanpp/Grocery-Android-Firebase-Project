@@ -44,7 +44,6 @@ public class EditProducts extends AppCompatActivity {
   private String name, category, quantity,productname, userId, imageUri, productId;
   private Double price;
   private FirebaseFirestore firebaseFirestore;
-  private DocumentReference documentReference;
   private SharedPreferences sharedPreferences;
 
   @Override
@@ -56,11 +55,15 @@ public class EditProducts extends AppCompatActivity {
     setContentView(R.layout.activity_edit_products);
     firebaseFirestore = FirebaseFirestore.getInstance();
     initWidgets();
+    init();
     getSharedPreference();
     Intent intent = getIntent();
     productname = intent.getExtras().get("name").toString();
     getData(productname);
 
+  }
+
+  private void init() {
     deleteBT.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -82,7 +85,6 @@ public class EditProducts extends AppCompatActivity {
         categoryET.setEnabled(true);
       }
     });
-
 
   }
 

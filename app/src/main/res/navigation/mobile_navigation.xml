@@ -16,5 +16,10 @@
         android:name="com.example.grocery.ui.orders.ViewOrderFragment"
         android:label="Today's Orders"
         tools:layout="@layout/activity_view_orders" />
+    <fragment
+        android:id="@+id/nav_completed"
+        android:name="com.example.grocery.ui.completedorders.CompletedOrder"
+        android:label="Completed Orders"
+        tools:layout="@layout/activity_completed_order" />
 
 </navigation>

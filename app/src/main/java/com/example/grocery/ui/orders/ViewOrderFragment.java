@@ -46,63 +46,42 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class ViewOrderFragment extends Fragment {
-
     public  final String MyPREFERENCES = "MyPrefs";
-    static ListView vieworder;
-    private final String TAG = "Orders";
-    private  DocumentReference documentReference;
-    private  CollectionReference collectionReference;
-    private FirebaseAuth firebaseAuth;
-    private    FirebaseFirestore firebaseFirestore;
-    private   String userId,orderno;
+
+    private CollectionReference collectionReference;
+    private FirebaseFirestore firebaseFirestore;
+    private String userId,orderno;
     private SharedPreferences sharedPreferences;
+    private Timestamp timestamp;
+    static SimpleDateFormat simpleDateFormat;
+    static ListView vieworder;
+    final List<HashMap<String, String>> listitems = new ArrayList<>();
+    final List<String> orderarray = new ArrayList<>();
     Date date;
-    private  Timestamp timestamp;
-    static   SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    final  List<HashMap<String, String>> listitems = new ArrayList<>();
-    final   List<String> orderarray = new ArrayList<String>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.activity_view_orders, container, false);
+        vieworder = root.findViewById(R.id.orders);
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         getSharedPreference();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        vieworder = root.findViewById(R.id.orders);
         collectionReference = firebaseFirestore.collection("stores").document(userId).collection("order");
 
-                    getorders();
+        getorders();
         listclick();
 
         return root;
     }
 
 
-    private void listclick() {
-        vieworder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getContext(), OrderDetails.class);
-                intent.putExtra("ordernumber",orderarray.get(i));
-                startActivity(intent);
-                           }
-
-
-        });
-
-    }
-
     public void getorders() {
         final SimpleAdapter adapter = new SimpleAdapter(getContext(), listitems, R.layout.order_list, new String[]{"FirstLine", "SecondLine"}, new int[]{R.id.orderno, R.id.date});
-
-        collectionReference.whereEqualTo("status", "order placed").orderBy("date",Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        collectionReference.orderBy("date",Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w(TAG, "Listen failed.", e);
-                    return;
-                }
-                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
                     orderno = document.getId();
                     timestamp = document.getTimestamp("date");
                     date = timestamp.toDate();
@@ -117,14 +96,22 @@ public class ViewOrderFragment extends Fragment {
                     listitems.add(resultmap);
                     orderarray.add(orderno);
                 }
-
-
                 vieworder.setAdapter(adapter);
             }
         });
-
-
     }
+
+    private void listclick() {
+        vieworder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getContext(), OrderDetails.class);
+                intent.putExtra("ordernumber",orderarray.get(i));
+                startActivity(intent);
+                           }
+        });
+    }
+
     public void getSharedPreference(){
         sharedPreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         userId = sharedPreferences.getString("userid", "");

@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-      <activity android:name=".CompletedOrders" />
+        <activity android:name=".ui.completedorders.CompletedOrder"></activity>
+        <activity android:name=".CompletedOrders" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

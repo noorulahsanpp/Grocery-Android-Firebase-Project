@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="155dp"
+    android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:id="@+id/linearlayout1"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="90dp"
+                android:src="@mipmap/ic_launcher"
+                android:id="@+id/itemimage"
+
+                />
+
+            <TextView
+
+                android:id="@+id/productname"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#403E3E"
+                android:textSize="10sp" />
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/productname"-->
+<!--                android:layout_marginLeft="100dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:id="@+id/itemprice"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold"/>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/quantity"-->
+<!--                android:layout_below="@id/itemprice"-->
+<!--                android:textSize="10sp"-->
+<!--                android:layout_marginLeft="100dp"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                />-->
+
+        </RelativeLayout>
+
+</FrameLayout>

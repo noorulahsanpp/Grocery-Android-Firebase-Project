@@ -16,10 +16,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder> {
-    ArrayList<String> image = new ArrayList<>();
-    ArrayList<String> price = new ArrayList<>();
-    ArrayList<String> num = new ArrayList<>();
-    ArrayList<String> name = new ArrayList<>();
+    ArrayList<String> image ;
+    ArrayList<String> price ;
+    ArrayList<String> num;
+    ArrayList<String> name ;
     float totalprice = 0;
     public OrderAdapter(ArrayList<String> itemname, ArrayList<String> quantity, ArrayList<String> images, ArrayList<String> prices) {
         name = itemname;

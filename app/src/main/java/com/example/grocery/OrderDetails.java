@@ -50,23 +50,22 @@ import java.util.Map;
 import static com.example.grocery.R.id.itemimage;
 
 public class OrderDetails extends AppCompatActivity {
- OrderAdapter adapter;
-   public static TextView name,phone,orderno,total,paymentstatus;
-    private static final String TAG = "Order Details";
-   private String customer,phoneno,no,ordernumber, userId;
+
     public static final String MyPREFERENCES = "MyPrefs" ;
-   private Button order;
-   private RecyclerView orderlist;
+    public static TextView name,phone,orderno,total,paymentstatus;
+    private String customer,phoneno,ordernumber, userId,orderid;
+    private Button order;
+    private RecyclerView orderlist;
     static ArrayList<String> images = new ArrayList<>();
     static ArrayList<String> prices = new ArrayList<>();
-    public static ArrayList<String> itemname = new ArrayList<>();
-    public static  ArrayList<String> quantity = new ArrayList<>();
+    public ArrayList<String> itemname = new ArrayList<>();
+    public ArrayList<String> quantity = new ArrayList<>();
     private DocumentReference documentReference;
     private CollectionReference collectionReference;
-    private FirebaseAuth firebaseAuth;
     private SharedPreferences sharedPreferences;
     private FirebaseFirestore firebaseFirestore;
     private Timestamp date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,40 +74,45 @@ public class OrderDetails extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         getSharedPreference();
         Intent intent = getIntent();
-       ordernumber = intent.getExtras().get("ordernumber").toString();
+        ordernumber = intent.getExtras().get("ordernumber").toString();
         initwidgets();
+        init();
         getdata(ordernumber);
 
-order.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        setcompletedorder();
-        collectionReference = firebaseFirestore.collection("stores").document(userId).collection("order");
-        collectionReference.document(ordernumber)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-        Toast.makeText(getApplicationContext(), "Your Order is placed.", Toast.LENGTH_LONG).show();
-        finish();
     }
-});
+
+    private void init() {
+        order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setcompletedorder();
+                collectionReference = firebaseFirestore.collection("stores").document(userId).collection("order");
+                collectionReference.document(ordernumber)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                            }
+                        });
+                Toast.makeText(getApplicationContext(), "Order Completed.", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
 
     }
-public void setcompletedorder(){
+
+    public void setcompletedorder(){
     collectionReference = firebaseFirestore.collection("stores").document(userId).collection("completedorder");
     Map<String, Object> products = new HashMap<>();
     products.put("name", itemname);
-    products.put("customer", customer);
+    products.put("orderid",orderid);
+    products.put("phone",phoneno);
+    products.put("customername", customer);
     products.put("itemno", quantity);
     products.put("date", date);
     products.put("image", images);
@@ -133,7 +137,7 @@ public void setcompletedorder(){
     }
 
 
-    private void getdata( String ordernumber) {
+    private void getdata(final String ordernumber) {
         documentReference = firebaseFirestore.collection("stores").document(userId).collection("order").document(ordernumber);
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -143,8 +147,9 @@ public void setcompletedorder(){
                     if (document.exists()) {
                         String status = document.get("status").toString();
                         if (status.equals("order placed")) {
+                            orderid=ordernumber;
                             itemname =(ArrayList<String>) document.get("name");
-                            customer= (String) document.get("username");
+                            customer= (String) document.get("customername");
                             phoneno = (String) document.get("phone");
                             quantity =(ArrayList<String>) document.get("itemno");
                             images =(ArrayList<String>) document.get("image");
@@ -157,7 +162,6 @@ public void setcompletedorder(){
                 phone.setText(phoneno);
                 name.setText(customer);
                 OrderAdapter adapter = new OrderAdapter(itemname,quantity,images,prices);
-
                 orderlist.setAdapter(adapter);
             }
         });
@@ -172,12 +176,10 @@ public void setcompletedorder(){
     @Override
     public void onStart() {
         super.onStart();
-        //   adapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-      //  adapter.stopListening();
     }
 }

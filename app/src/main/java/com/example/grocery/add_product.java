@@ -43,13 +43,10 @@ import java.util.Map;
 
 public class add_product extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
   private static final String TAG = "AddProduct";
-
   public static final String MyPREFERENCES = "MyPrefs" ;
+  SharedPreferences sharedPreferences;
   private static final int GalleryPick = 1000;
-
   private Uri imageUri;
-
-
   private String pName = "", pCategory = "", pOther = "",saveCurrentDate,saveCurrentTime,downloadImageUrl;
   private ImageView image;
   private float pPrice = 0;
@@ -57,9 +54,7 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
   private EditText nameET, priceET, quantityET;
   private Button addBT;
   private ProgressDialog progressDialog;
-  SharedPreferences sharedPreferences;
   private String userId;
-
   private FirebaseFirestore firebaseFirestore;
   private StorageReference mStorageRef;
   private Spinner categorySp;
@@ -130,10 +125,13 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
     categorySp.setOnItemSelectedListener(this);
     List<String> categories = new ArrayList<>();
     categories.add("Category");
+    categories.add("General Store");
+    categories.add("Vegetables and Fruits");
+    categories.add("Electronics and Home Appliances");
     categories.add("Groceries");
-    categories.add("Electronics");
-    categories.add("Home Appliances");
-    categories.add("Fruits and vegetables");
+    categories.add("Fish and Meat");
+    categories.add("Bakery");
+    categories.add("Restaurent");
 
     ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,categories);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -32,11 +32,11 @@ public class forgotpassword extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_forgotpassword);
     popup();
+    initwidgets();
+    init();
+  }
 
-    emailEt = findViewById(R.id.emailEt);
-    send = findViewById(R.id.sendpswd);
-
-
+  private void init() {
     send.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -44,6 +44,11 @@ public class forgotpassword extends AppCompatActivity {
         forgotpswd(email);
       }
     });
+  }
+
+  private void initwidgets() {
+    emailEt = findViewById(R.id.emailEt);
+    send = findViewById(R.id.sendpswd);
   }
 
   private void forgotpswd(String email) {
@@ -69,7 +74,6 @@ public class forgotpassword extends AppCompatActivity {
     int height = dm.heightPixels;
 
     getWindow().setLayout((int) (width * .9), (int) (height * .6));
-
     WindowManager.LayoutParams params = getWindow().getAttributes();
     params.gravity = Gravity.CENTER;
     params.x = 0;

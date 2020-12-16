@@ -21,12 +21,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.squareup.picasso.Picasso;
 
 public class ProductAdapter extends FirestoreRecyclerAdapter<Products, ProductAdapter.ProductHolder>{
-    public static final String MyPREFERENCES = "MyPrefs" ;
-    private SharedPreferences sharedPreferences;
-
 
     List<String> itemname = new ArrayList<>();
-
 
     public ProductAdapter(@NonNull FirestoreRecyclerOptions<Products> options) {
         super(options);
@@ -36,12 +32,11 @@ public class ProductAdapter extends FirestoreRecyclerAdapter<Products, ProductAd
     protected void onBindViewHolder(@NonNull ProductHolder holder, final int position, @NonNull final Products products) {
         holder.price.setText("₹"+products.getPrice().toString());
         String productname = products.getName();
-       holder.topic.setText(productname);
+        holder.topic.setText(productname);
         itemname.add(productname);
         String imageUrl = products.getImage();
         Picasso.get().load(imageUrl).into(holder.image);
     }
-
 
 
     @NonNull

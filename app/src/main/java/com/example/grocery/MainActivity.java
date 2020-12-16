@@ -35,9 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private SharedPreferences sharedPreferences;
-    private static final String TAG = "product_details2";
-    public static final String MyPREFERENCES = "MyPrefs" ;
 
+    public static final String MyPREFERENCES = "MyPrefs" ;
     private String userId,name,image,details;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        firebaseFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser()==null)
         {
@@ -61,44 +60,29 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
-        firebaseFirestore = FirebaseFirestore.getInstance();
         userId = mAuth.getCurrentUser().getUid();
-
-
         setSharedPreferences();
-
-        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
-     navigationView = findViewById(R.id.nav_view);
+        init();
         setStoreDetails();
-    firebaseFirestore.collection("stores").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-          @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                      name = document.get("storename").toString()+("\n")+document.get("category").toString()+("\n")+document.get("location").toString()+(" ")+document.get("phone").toString();;
-                    image = document.get("storeimage").toString();
-                   storename.setText(name);
-                   Picasso.get().load(image).into(Navimage);
-          }
 
-           }
-       });
+}
+
+    private void init() {
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        storename = navigationView.getHeaderView(0).findViewById(R.id.nav_shopname);
+        Navimage = navigationView.getHeaderView(0).findViewById(R.id.nav_Image);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_product, R.id.nav_order)
+                R.id.nav_product, R.id.nav_order,R.id.nav_completed)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navigationView, navController);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+    }
 
-
-
-
-
-
-}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -139,7 +123,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStoreDetails(){
-        storename = navigationView.getHeaderView(0).findViewById(R.id.nav_shopname);
-        Navimage = navigationView.getHeaderView(0).findViewById(R.id.nav_Image);
+        firebaseFirestore.collection("stores").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    name = document.get("storename").toString()+("\n")+document.get("category").toString()+("\n")+document.get("location").toString()+(" ")+document.get("phone").toString();;
+                    image = document.get("storeimage").toString();
+                    storename.setText(name);
+                    Picasso.get().load(image).into(Navimage);
+                }
+
+            }
+        });
     }
 }

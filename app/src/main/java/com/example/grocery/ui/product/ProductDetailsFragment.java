@@ -34,8 +34,7 @@ public class ProductDetailsFragment extends Fragment {
   SharedPreferences sharedPreferences;
   private RecyclerView recyclerView;
   private com.google.android.material.floatingactionbutton.FloatingActionButton add;
-  private String productname, price, userId;
-  private String images;
+  private String userId;
   private FirebaseFirestore firebaseFirestore;
   private CollectionReference collectionReference;
   private ProductAdapter adapter;
@@ -43,32 +42,22 @@ public class ProductDetailsFragment extends Fragment {
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
-
-
     View root = inflater.inflate(R.layout.product_details, container, false);
 
-    getSharedPreference();
-
-    //     listView = root.findViewById(R.id.listview);
     add = root.findViewById(R.id.button);
-    firebaseFirestore = FirebaseFirestore.getInstance();
     recyclerView = root.findViewById(R.id.recyclerview);
 
-
+    getSharedPreference();
+    firebaseFirestore = FirebaseFirestore.getInstance();
     collectionReference = firebaseFirestore.collection("stores").document(userId+"").collection("products");
-
     getproducts();
 
-
-    add= root.findViewById(R.id.button);
     add.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         startActivity(new Intent(getContext(), add_product.class));
       }
     });
-
-
     return root;
   }
 
@@ -90,7 +79,6 @@ public class ProductDetailsFragment extends Fragment {
     recyclerView.setAdapter(adapter);
 
   }
-
 
 
   @Override
