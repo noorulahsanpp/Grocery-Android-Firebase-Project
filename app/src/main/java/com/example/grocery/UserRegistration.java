@@ -244,7 +244,7 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
           @Override
           public void onComplete(@NonNull Task<Uri> task) {
             if (task.isSuccessful()) {
-              Toast.makeText(UserRegistration.this, "got imageuri successfully", Toast.LENGTH_LONG);
+              downloadImageUrl = task.getResult().toString();
               saveData();
             }
           }
@@ -270,27 +270,6 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
         @Override
         public void onSuccess(Void aVoid) {
 //                    startActivity(new Intent(UserRegistration.this, home.class));
-<<<<<<< HEAD
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(UserRegistration.this, "Something went wrong. Please try again later.", Toast.LENGTH_SHORT).show();
-                }
-            });
-            GeoPoint geoPoint = new GeoPoint(Double.parseDouble(latitudeLOC), Double.parseDouble(longitudeLOC));
-            locationinfo.put("position", geoPoint);
-            location.set(locationinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    startActivity(new Intent(UserRegistration.this, home.class));
-                }
-            });
-
-        } catch (Exception e) {
-            Log.d(TAG, "addProduct: " + e);
-=======
->>>>>>> 51365c9a7f8252d75189cf52f34458a061c8088c
         }
       }).addOnFailureListener(new OnFailureListener() {
         @Override
@@ -298,8 +277,8 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
           Toast.makeText(UserRegistration.this, "Something went wrong. Please try again later.", Toast.LENGTH_SHORT).show();
         }
       });
-      locationinfo.put("altitude", latitudeLOC);
-      locationinfo.put("longitude", longitudeLOC);
+      GeoPoint geoPoint = new GeoPoint(Double.parseDouble(latitudeLOC), Double.parseDouble(longitudeLOC));
+      locationinfo.put("position", geoPoint);
       location.set(locationinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
         @Override
         public void onSuccess(Void aVoid) {
@@ -341,7 +320,7 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
     nameET = findViewById(R.id.name);
     locationET = findViewById(R.id.location);
     phoneET = findViewById(R.id.phone);
-  //  phoneET.setEnabled(false);
+    phoneET.setEnabled(false);
     photo = findViewById(R.id.image);
     categoryET = findViewById(R.id.category);
     ownerNAmeET = findViewById(R.id.ownername);
@@ -362,8 +341,6 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
     categories.add("Electronics");
     categories.add("Home Appliances");
     categories.add("Fruits and vegetables");
-    categories.add("Restaurent");
-    categories.add("Bakery");
 
     ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
