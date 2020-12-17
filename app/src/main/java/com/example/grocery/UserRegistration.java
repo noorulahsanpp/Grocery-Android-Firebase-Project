@@ -73,7 +73,7 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
   private EditText phoneET, nameET, locationET, ownerNAmeET;
   private Spinner categoryET;
   private Button signUpBtn, currentLocationBTN;
-  private ProgressDialog progressDialog;
+  public ProgressDialog progressDialog;
   private TextView register;
   private String sName = "", sLocation = "", sCategory = "", saveCurrentDate, saveCurrentTime, downloadImageUrl;
   private String phoneNo, userId, uName;
@@ -114,9 +114,7 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
 
     mStorageRef = FirebaseStorage.getInstance().getReference();
     firebaseFirestore = FirebaseFirestore.getInstance();
-    user = FirebaseAuth.getInstance().getCurrentUser();
     mAuth = FirebaseAuth.getInstance();
-    progressDialog = new ProgressDialog(this);
     locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -130,7 +128,7 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
         getData();
-        if (validate(sName, sCategory, sLocation, uName)) {
+        if (validate(sName, sCategory, sLocation, uName,imageUri)) {
           uploadImage();
         }
       }
@@ -282,7 +280,8 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
       location.set(locationinfo).addOnSuccessListener(new OnSuccessListener<Void>() {
         @Override
         public void onSuccess(Void aVoid) {
-          startActivity(new Intent(UserRegistration.this, home.class));
+          progressDialog.dismiss();
+          startActivity(new Intent(UserRegistration.this, MainActivity.class));
         }
       });
 
@@ -291,24 +290,32 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
     }
   }
 
-  public Boolean validate(String name, String category, String location, String uname) {
+  public Boolean validate(String name, String category, String location, String uname, Uri uri) {
+
     if (TextUtils.isEmpty(name)) {
       nameET.setError("Input name");
       nameET.requestFocus();
-      return false;
-    } else if (TextUtils.isEmpty(category)) {
-      Toast.makeText(getApplicationContext(), "Please choose category", Toast.LENGTH_LONG);
+      progressDialog.dismiss();
       return false;
     } else if (category.equals("Category")) {
-      Toast.makeText(getApplicationContext(), "Please choose category", Toast.LENGTH_LONG);
+      Toast.makeText(getApplicationContext(), "Please choose category", Toast.LENGTH_LONG).show();
+      progressDialog.dismiss();
       return false;
     } else if (TextUtils.isEmpty(location)) {
       locationET.setError("Input Location");
       locationET.requestFocus();
+      Toast.makeText(getApplicationContext(), "Please choose location", Toast.LENGTH_LONG).show();
+      progressDialog.dismiss();
       return false;
+
     } else if (TextUtils.isEmpty(uname)) {
-      nameET.setError("Input Owner name");
-      nameET.requestFocus();
+      ownerNAmeET.setError("Input Owner name");
+      ownerNAmeET.requestFocus();
+      progressDialog.dismiss();
+      return false;
+    }else if (uri == null) {
+      Toast.makeText(getApplicationContext(), "Photo missing!", Toast.LENGTH_LONG).show();
+      progressDialog.dismiss();
       return false;
     }
     return true;
@@ -359,4 +366,3 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
 
 
 }
-
