@@ -5,16 +5,23 @@ import java.util.List;
 
 public class Item {
     private String customername;
-    private String phone;
+    private String customerphone;
     private String orderid;
-
+    private ArrayList<String> itemname;
+    private ArrayList<String> itemno;
+    private ArrayList<String> itemimage;
+    private ArrayList<String> itemprice;
     public Item() {
     }
 
-    public Item(String customername, String phone, String orderid) {
+    public Item(String customername, String customerphone, String orderid,ArrayList<String> itemname,ArrayList<String> itemno,ArrayList<String> itemimage,ArrayList<String> itemprice ) {
         this.customername = customername;
         this.orderid = orderid;
-        this.phone = phone;
+        this.customerphone = customerphone;
+        this.itemname = itemname;
+        this.itemno = itemno;
+        this.itemimage = itemimage;
+        this.itemprice = itemprice;
     }
 
     public String getCustomername() {
@@ -25,12 +32,12 @@ public class Item {
         this.customername = customername;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getCustomerphone() {
+        return customerphone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setCustomerphone(String customerphone) {
+        this.customerphone = customerphone;
     }
 
     public String getOrderid() {
@@ -41,4 +48,35 @@ public class Item {
         this.orderid = orderid;
     }
 
+    public ArrayList<String> getItemname() {
+        return itemname;
+    }
+
+    public void setItemname(ArrayList<String> itemname) {
+        this.itemname = itemname;
+    }
+
+    public ArrayList<String> getItemno() {
+        return itemno;
+    }
+
+    public void setItemno(ArrayList<String> itemno) {
+        this.itemno = itemno;
+    }
+
+    public ArrayList<String> getItemimage() {
+        return itemimage;
+    }
+
+    public void setItemimage(ArrayList<String> itemimage) {
+        this.itemimage = itemimage;
+    }
+
+    public ArrayList<String> getItemprice() {
+        return itemprice;
+    }
+
+    public void setItemprice(ArrayList<String> itemprice) {
+        this.itemprice = itemprice;
+    }
 }

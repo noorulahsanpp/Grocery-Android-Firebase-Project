@@ -20,16 +20,16 @@ import java.util.List;
 
 public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemViewHolder> {
 
-    static ArrayList<String> image = new ArrayList<>();
-    static ArrayList<String> price = new ArrayList<>();
-    public static ArrayList<String> name = new ArrayList<>();
-    public static  ArrayList<String> num = new ArrayList<>();
+    static ArrayList<String> subImage = new ArrayList<>();
+    static ArrayList<String> subPrice = new ArrayList<>();
+    public static ArrayList<String> subName = new ArrayList<>();
+    public static  ArrayList<String> subquantity = new ArrayList<>();
 
-    public SubItemAdapter(ArrayList<String> itemname, ArrayList<String> quantity, ArrayList<String> images, ArrayList<String> prices) {
-        name = itemname;
-        price = prices;
-        num = quantity;
-        image = images;
+    public SubItemAdapter(ArrayList<String> itemName, ArrayList<String> itemQuantity, ArrayList<String> itemImages, ArrayList<String> itemPrices) {
+        subName = itemName;
+        subPrice = itemPrices;
+        subquantity = itemQuantity;
+        subImage = itemImages;
     }
 
     @NonNull
@@ -42,25 +42,25 @@ public class SubItemAdapter extends RecyclerView.Adapter<SubItemAdapter.SubItemV
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull SubItemViewHolder holder, int position) {
-        holder.productname.setText(name.get(position)+ "\n\n" + "₹"+ price.get(position) + "\n" + "Qty: " +num.get(position));
-        String imageUrl = image.get(position);
-        Picasso.get().load(imageUrl).into(holder.itemimage);
+        holder.productnameTv.setText(subName.get(position)+ "\n\n" + "₹"+ subPrice.get(position) + "\n" + "Qty: " +subquantity.get(position));
+        String imageUrl = subImage.get(position);
+        Picasso.get().load(imageUrl).into(holder.ivImage);
     }
 
     @Override
     public int getItemCount() {
-        return name.size();
+        return subName.size();
     }
 
 
     static class SubItemViewHolder extends RecyclerView.ViewHolder {
-        ImageView itemimage;
-        TextView productname;
+        ImageView ivImage;
+        TextView productnameTv;
 
         SubItemViewHolder(View itemView) {
             super(itemView);
-            itemimage = itemView.findViewById(R.id.itemimage);
-            productname = itemView.findViewById(R.id.productname);
+            ivImage = itemView.findViewById(R.id.itemimage);
+            productnameTv = itemView.findViewById(R.id.productname);
         }
     }
 }

@@ -40,15 +40,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.OrderHolder holder, int position) {
 
-        holder.productname.setText(name.get(position));
-        holder.price.setText("₹"+price.get(position));
+        holder.tvProductname.setText(name.get(position));
+        holder.tvPrice.setText("₹"+price.get(position));
         String amount = price.get(position);
         String imageUrl = image.get(position);
-         Picasso.get().load(imageUrl).into(holder.itemimage);
+         Picasso.get().load(imageUrl).into(holder.ivItemimage);
         String itemnum = num.get(position);
-        holder.quantity.setText(itemnum);
+        holder.tvQuantity.setText(itemnum);
         totalprice = totalprice +( Float.parseFloat(amount)* Integer.parseInt(itemnum));
-        OrderDetails.total.setText("₹"+totalprice);
+        OrderDetails.tvTotal.setText("₹"+totalprice);
     }
 
     @Override
@@ -57,16 +57,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
     }
 
     public class OrderHolder extends RecyclerView.ViewHolder {
-        ImageView itemimage;
-        TextView productname,quantity,price;
+        ImageView ivItemimage;
+        TextView tvProductname,tvQuantity,tvPrice;
 
         public OrderHolder(@NonNull View itemView) {
             super(itemView);
 
-            itemimage = itemView.findViewById(R.id.itemimage);
-            productname = itemView.findViewById(R.id.productname);
-            quantity = itemView.findViewById(R.id.quantity);
-            price = itemView.findViewById(R.id.itemprice);
+            ivItemimage = itemView.findViewById(R.id.itemimage);
+            tvProductname = itemView.findViewById(R.id.productname);
+            tvQuantity = itemView.findViewById(R.id.quantity);
+            tvPrice = itemView.findViewById(R.id.itemprice);
         }
     }
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,10 +39,10 @@ import java.util.Map;
 
 public class ItemAdapter extends FirestoreRecyclerAdapter<Item,ItemAdapter.ItemViewHolder> {
 
-    private ArrayList<String> images = new ArrayList<>();
-    private ArrayList<String> prices = new ArrayList<>();
-    private ArrayList<String> itemname = new ArrayList<>();
-    private ArrayList<String> quantity = new ArrayList<>();
+    private ArrayList<String> itemImages = new ArrayList<>();
+    private ArrayList<String> itemPrices = new ArrayList<>();
+    private ArrayList<String> itemName = new ArrayList<>();
+    private ArrayList<String> itemQuantity = new ArrayList<>();
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
     private String userid;
     private FirebaseFirestore firebaseFirestore;
@@ -60,23 +61,26 @@ public class ItemAdapter extends FirestoreRecyclerAdapter<Item,ItemAdapter.ItemV
     protected void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder, int position, @NonNull final Item item) {
 
         itemViewHolder.tvItemTitle.setText(item.getCustomername());
-        itemViewHolder.phone.setText(item.getPhone());
-        String orderid = item.getOrderid();
-        collectionReference.whereEqualTo("orderid",orderid).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    itemname = (ArrayList<String>) document.get("name");
-                    quantity = (ArrayList<String>) document.get("itemno");
-                    images = (ArrayList<String>) document.get("image");
-                    prices = (ArrayList<String>) document.get("price");
-                }
-                LinearLayoutManager layoutManager = new LinearLayoutManager(itemViewHolder.rvSubItem.getContext(), LinearLayoutManager.HORIZONTAL, false);
-                itemViewHolder.rvSubItem.setLayoutManager(layoutManager);
-                subItemAdapter = new SubItemAdapter(itemname,quantity,images,prices);
+        itemViewHolder.tvPhone.setText(item.getCustomerphone());
+        itemName = item.getItemname();
+        itemQuantity = item.getItemno();
+        itemImages = item.getItemimage();
+        itemPrices = item.getItemprice();
+
+        float total =  0;
+        for(int i = 0; i< itemQuantity.size() ;i++ ){
+            total = total +Integer.parseInt(itemQuantity.get(i))*Float.parseFloat(itemPrices.get(i));
+        }
+        itemViewHolder.tvTotal.setText("₹" +total);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(itemViewHolder.rvSubItem.getContext(),2,GridLayoutManager.VERTICAL,false);
+        itemViewHolder.rvSubItem.setLayoutManager(gridLayoutManager);
+        subItemAdapter = new SubItemAdapter(itemName,itemQuantity,itemImages,itemPrices);
                 itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
-            }
-        });
+        itemViewHolder
+                .rvSubItem
+                .setRecycledViewPool(viewPool);
+
     }
 
 
@@ -88,15 +92,15 @@ public class ItemAdapter extends FirestoreRecyclerAdapter<Item,ItemAdapter.ItemV
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvItemTitle,phone;
+        private TextView tvItemTitle,tvPhone,tvTotal;
         private RecyclerView rvSubItem;
 
         ItemViewHolder(View itemView) {
             super(itemView);
             tvItemTitle = itemView.findViewById(R.id.tv_item_title);
-            phone = itemView.findViewById(R.id.tv_item_phone);
+            tvPhone = itemView.findViewById(R.id.tv_item_phone);
             rvSubItem = itemView.findViewById(R.id.rv_sub_item);
-
+            tvTotal = itemView.findViewById(R.id.total);
 
         }
     }

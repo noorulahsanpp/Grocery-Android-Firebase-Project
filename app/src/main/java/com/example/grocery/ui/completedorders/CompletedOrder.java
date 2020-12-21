@@ -53,6 +53,7 @@ public class CompletedOrder extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_completed_order, container, false);
+
         rvItem = root.findViewById(R.id.rv_item);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvItem.setLayoutManager(layoutManager);
