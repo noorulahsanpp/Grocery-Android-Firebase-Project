@@ -158,11 +158,9 @@ public class OTP extends AppCompatActivity {
                 else {
                      Toast.makeText(OTP.this, task.getException().getMessage(), Toast.LENGTH_LONG);
                 }
-
             }
         });
     }
-
 
     private void popup() {
         DisplayMetrics dm = new DisplayMetrics();

@@ -204,7 +204,6 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
           public void onComplete(@NonNull Task<Uri> task) {
             if (task.isSuccessful()){
               downloadImageUrl = task.getResult().toString();
-              Toast.makeText(add_product.this, "got imageuri successfully", Toast.LENGTH_LONG);
               addProduct();
             }
           }
@@ -215,7 +214,9 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
 
   public void getData(){
     pName = nameET.getText().toString().trim();
+    if(!TextUtils.isEmpty(quantityET.getText().toString()))
     pQuantity = Integer.parseInt(quantityET.getText().toString().trim());
+    if(!TextUtils.isEmpty(priceET.getText().toString()))
     pPrice = Float.parseFloat(priceET.getText().toString().trim());
   }
 
@@ -223,39 +224,39 @@ public class add_product extends AppCompatActivity implements AdapterView.OnItem
     if (TextUtils.isEmpty(name)){
       nameET.setError("Input name");
       nameET.requestFocus();
+      progressDialog.dismiss();
       return false;
     }
     else if (TextUtils.isEmpty(price+"")){
       priceET.setError("Input price");
       priceET.requestFocus();
+      progressDialog.dismiss();
       return false;
     }
     else if(price<=0){
       priceET.setError("Inavlid Input");
       priceET.requestFocus();
+      progressDialog.dismiss();
       return false;
     }
-//        else if(TextUtils.isEmpty(category)){
-    //           categorySp.setError("Invalid Input");
-    //           categorySp.requestFocus();
-    //           return false;
-    //       }
 
-    else if (TextUtils.isEmpty(quantity+"")){
-      priceET.setError("Input price");
-      priceET.requestFocus();
-      return false;
-    }
+        else if(pCategory=="Category"){
+      Toast.makeText(this, "Please choose category.",Toast.LENGTH_LONG).show();
+      progressDialog.dismiss();
+               return false;
+           }
+
     else if(quantity<=0){
-      priceET.setError("Inavlid Input");
-      priceET.requestFocus();
+      quantityET.setError("Inavlid Input");
+      quantityET.requestFocus();
+      progressDialog.dismiss();
       return false;
     }
-//        else if(imageUri==null){
-//            Toast.makeText(this, "Product image is mandatory.",Toast.LENGTH_LONG);
-//            return false;
-//        }
-
+        else if(imageUri==null){
+            Toast.makeText(this, "Product image is mandatory.",Toast.LENGTH_LONG).show();
+      progressDialog.dismiss();
+            return false;
+        }
     return true;
   }
   private void initWidgets(){
