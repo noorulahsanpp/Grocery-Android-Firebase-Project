@@ -52,10 +52,10 @@ import static com.example.grocery.R.id.itemimage;
 public class OrderDetails extends AppCompatActivity {
 
     public static final String MyPREFERENCES = "MyPrefs" ;
-    public static TextView name,phone,orderno,total,paymentstatus;
+    public static TextView tv_cus_name,tv_cus_phone,tvOrderno,tvTotal,tvPaymentstatus;
     private String customer,phoneno,ordernumber, userId,orderid;
-    private Button order;
-    private RecyclerView orderlist;
+    private Button orderBtn;
+    private RecyclerView rvOrderlist;
     static ArrayList<String> images = new ArrayList<>();
     static ArrayList<String> prices = new ArrayList<>();
     public ArrayList<String> itemname = new ArrayList<>();
@@ -82,7 +82,7 @@ public class OrderDetails extends AppCompatActivity {
     }
 
     private void init() {
-        order.setOnClickListener(new View.OnClickListener() {
+        orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setcompletedorder();
@@ -109,30 +109,30 @@ public class OrderDetails extends AppCompatActivity {
     public void setcompletedorder(){
     collectionReference = firebaseFirestore.collection("stores").document(userId).collection("completedorder");
     Map<String, Object> products = new HashMap<>();
-    products.put("name", itemname);
+    products.put("itemname", itemname);
     products.put("orderid",orderid);
-    products.put("phone",phoneno);
+    products.put("customerphone",phoneno);
     products.put("customername", customer);
     products.put("itemno", quantity);
     products.put("date", date);
-    products.put("image", images);
-    products.put("price", prices);
+    products.put("itemimage", images);
+    products.put("itemprice", prices);
     products.put("status", "order ready");
     collectionReference.document().set(products);
 
 }
 
     private void initwidgets(){
-        name = findViewById(R.id.customer);
-        phone = findViewById(R.id.phoneno);
-        order = findViewById(R.id.Orderrdy);
-        orderlist = findViewById(R.id.orders);
-        orderno = findViewById(R.id.orderno);
-        orderlist.setHasFixedSize(true);
-        orderlist.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        paymentstatus = findViewById(R.id.paystatus);
-        total = findViewById(R.id.total);
-        orderno.setText(ordernumber);
+        tv_cus_name = findViewById(R.id.customer);
+        tv_cus_phone = findViewById(R.id.phoneno);
+        orderBtn = findViewById(R.id.Orderrdy);
+        rvOrderlist = findViewById(R.id.orders);
+        tvOrderno = findViewById(R.id.orderno);
+        rvOrderlist.setHasFixedSize(true);
+        rvOrderlist.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        tvPaymentstatus = findViewById(R.id.paystatus);
+        tvTotal = findViewById(R.id.total);
+        tvOrderno.setText(ordernumber);
 
     }
 
@@ -159,10 +159,10 @@ public class OrderDetails extends AppCompatActivity {
                         }
                     }
                 }
-                phone.setText(phoneno);
-                name.setText(customer);
+                tv_cus_phone.setText(phoneno);
+                tv_cus_name.setText(customer);
                 OrderAdapter adapter = new OrderAdapter(itemname,quantity,images,prices);
-                orderlist.setAdapter(adapter);
+                rvOrderlist.setAdapter(adapter);
             }
         });
 

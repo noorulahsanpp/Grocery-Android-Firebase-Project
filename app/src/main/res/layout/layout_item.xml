@@ -58,6 +58,25 @@
                 android:padding="5sp"
                 android:textSize="12sp"
                 android:text=""/>
+            <TextView
+                android:id="@+id/totalamnt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:layout_below="@+id/phone"
+                android:textSize="12sp"
+                android:text="Total Amount : "/>
+
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:paddingLeft="5dp"
+                android:layout_below="@id/phone"
+                android:textSize="12sp"
+                android:text=""/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_sub_item"
                 android:layout_marginTop="10dp"
