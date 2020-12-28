@@ -364,5 +364,4 @@ public class UserRegistration extends AppCompatActivity implements AdapterView.O
 
   }
 
-
 }

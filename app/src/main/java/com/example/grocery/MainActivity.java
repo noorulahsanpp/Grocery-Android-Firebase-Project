@@ -3,6 +3,7 @@ package com.example.grocery;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Menu;
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView Navimage;
     private TextView storename;
     private NavigationView navigationView;
+    private Boolean exit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         setStoreDetails();
 
 }
-
     private void init() {
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -97,8 +98,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -134,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
                     storename.setText(name);
                     Picasso.get().load(image).into(Navimage);
                 }
-
             }
         });
     }
