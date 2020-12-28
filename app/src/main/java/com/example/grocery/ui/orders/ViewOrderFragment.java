@@ -19,9 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocery.OrderDetails;
 import com.example.grocery.R;
+import com.example.grocery.ui.product.ProductAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -50,66 +53,63 @@ public class ViewOrderFragment extends Fragment {
 
     private CollectionReference collectionReference;
     private FirebaseFirestore firebaseFirestore;
-    private String userId,orderno;
+    private String date1,orderno,userId;
     private SharedPreferences sharedPreferences;
-    private Timestamp timestamp;
     static SimpleDateFormat simpleDateFormat;
-    static ListView vieworder;
-    final List<HashMap<String, String>> listitems = new ArrayList<>();
+    static RecyclerView vieworder;
     final List<String> orderarray = new ArrayList<>();
-    Date date;
-
+    final List<String> datearray = new ArrayList<>();
+    ViewOrderAdapter adapter;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.activity_view_orders, container, false);
         vieworder = root.findViewById(R.id.orders);
+        vieworder.setHasFixedSize(true);
+        vieworder.setLayoutManager(new LinearLayoutManager(getContext()));
+
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         getSharedPreference();
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection("stores").document(userId).collection("order");
-
-        getorders();
-        listclick();
-
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        orderarray.clear();
+        datearray.clear();
+        ViewOrderAdapter.dateArray.clear();
+        ViewOrderAdapter.orderArray.clear();
+        getorders();
+    }
 
     public void getorders() {
-        final SimpleAdapter adapter = new SimpleAdapter(getContext(), listitems, R.layout.order_list, new String[]{"FirstLine", "SecondLine"}, new int[]{R.id.orderno, R.id.date});
         collectionReference.orderBy("date",Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    orderno = document.getId();
-                    timestamp = document.getTimestamp("date");
-                    date = timestamp.toDate();
-                    String date1 = simpleDateFormat.format(date);
-                    Map<Object, Object> productdetails = new HashMap<>();
-                    productdetails.put(orderno, date1);
-                    Iterator it = productdetails.entrySet().iterator();
-                    HashMap<String, String> resultmap = new HashMap<>();
-                    Map.Entry pair = (Map.Entry) it.next();
-                    resultmap.put("FirstLine", pair.getKey().toString());
-                    resultmap.put("SecondLine", pair.getValue().toString());
-                    listitems.add(resultmap);
-                    orderarray.add(orderno);
+                   orderno = document.getId();
+                   orderarray.add(orderno);
+                  Timestamp timestamp = document.getTimestamp("date");
+                  Date date = timestamp.toDate();
+                  date1 = simpleDateFormat.format(date);
+                  datearray.add(date1);
                 }
+                adapter = new ViewOrderAdapter(orderarray,datearray);
                 vieworder.setAdapter(adapter);
             }
         });
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
-    private void listclick() {
-        vieworder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getContext(), OrderDetails.class);
-                intent.putExtra("ordernumber",orderarray.get(i));
-                startActivity(intent);
-                           }
-        });
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     public void getSharedPreference(){
