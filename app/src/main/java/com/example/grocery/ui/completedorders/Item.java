@@ -1,12 +1,14 @@
 package com.example.grocery.ui.completedorders;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Item {
     private String customername;
     private String customerphone;
     private String orderid;
+    Date date;
     private ArrayList<String> itemname;
     private ArrayList<String> itemno;
     private ArrayList<String> itemimage;
@@ -14,7 +16,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(String customername, String customerphone, String orderid,ArrayList<String> itemname,ArrayList<String> itemno,ArrayList<String> itemimage,ArrayList<String> itemprice ) {
+    public Item(String customername, String customerphone, String orderid,ArrayList<String> itemname,ArrayList<String> itemno,ArrayList<String> itemimage,ArrayList<String> itemprice, Date date ) {
         this.customername = customername;
         this.orderid = orderid;
         this.customerphone = customerphone;
@@ -22,6 +24,7 @@ public class Item {
         this.itemno = itemno;
         this.itemimage = itemimage;
         this.itemprice = itemprice;
+        this.date =date;
     }
 
     public String getCustomername() {
@@ -78,5 +81,13 @@ public class Item {
 
     public void setItemprice(ArrayList<String> itemprice) {
         this.itemprice = itemprice;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

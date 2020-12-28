@@ -23,6 +23,7 @@ import com.example.grocery.R;
 import com.example.grocery.ui.product.ProductAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,7 +43,7 @@ import java.util.Map;
 
 public class CompletedOrder extends Fragment {
     public static final String MyPREFERENCES = "MyPrefs";
-
+    TextView noOrderTv;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference collectionReference;
     private ItemAdapter itemAdapter;
@@ -57,6 +58,8 @@ public class CompletedOrder extends Fragment {
         rvItem = root.findViewById(R.id.rv_item);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvItem.setLayoutManager(layoutManager);
+        noOrderTv = root.findViewById(R.id.noOrders);
+        noOrderTv.setVisibility(View.INVISIBLE);
         getSharedPreference();
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection("stores").document(userId).collection("completedorder");
@@ -71,7 +74,13 @@ public class CompletedOrder extends Fragment {
     }
 
     private void getdata(){
-        Query query = collectionReference.orderBy("date", Query.Direction.ASCENDING);
+        Query query = collectionReference.orderBy("date", Query.Direction.DESCENDING);
+        query.get().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                noOrderTv.setVisibility(View.VISIBLE);
+            }
+        });
         FirestoreRecyclerOptions<Item> options = new FirestoreRecyclerOptions.Builder<Item>()
                 .setQuery(query, Item.class)
                 .build();

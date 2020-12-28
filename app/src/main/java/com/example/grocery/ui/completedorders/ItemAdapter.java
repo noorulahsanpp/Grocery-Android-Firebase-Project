@@ -31,7 +31,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -59,14 +61,19 @@ public class ItemAdapter extends FirestoreRecyclerAdapter<Item,ItemAdapter.ItemV
 
     @Override
     protected void onBindViewHolder(@NonNull final ItemViewHolder itemViewHolder, int position, @NonNull final Item item) {
-
-        itemViewHolder.tvItemTitle.setText(item.getCustomername());
-        itemViewHolder.tvPhone.setText(item.getCustomerphone());
         itemName = item.getItemname();
         itemQuantity = item.getItemno();
         itemImages = item.getItemimage();
         itemPrices = item.getItemprice();
+        String date;
+        Date date1;
+        SimpleDateFormat simpleDateFormat= new SimpleDateFormat("dd/MM/yyyy");
+        date1 = item.getDate();
+        date = simpleDateFormat.format(date1);
+        itemViewHolder.tvDate.setText(date);
 
+        itemViewHolder.tvItemTitle.setText(item.getCustomername());
+        itemViewHolder.tvPhone.setText(item.getCustomerphone());
         float total =  0;
         for(int i = 0; i< itemQuantity.size() ;i++ ){
             total = total +Integer.parseInt(itemQuantity.get(i))*Float.parseFloat(itemPrices.get(i));
@@ -77,9 +84,9 @@ public class ItemAdapter extends FirestoreRecyclerAdapter<Item,ItemAdapter.ItemV
         itemViewHolder.rvSubItem.setLayoutManager(gridLayoutManager);
         subItemAdapter = new SubItemAdapter(itemName,itemQuantity,itemImages,itemPrices);
                 itemViewHolder.rvSubItem.setAdapter(subItemAdapter);
-        itemViewHolder
-                .rvSubItem
-                .setRecycledViewPool(viewPool);
+//        itemViewHolder
+//                .rvSubItem
+//                .setRecycledViewPool(viewPool);
 
     }
 
@@ -92,7 +99,7 @@ public class ItemAdapter extends FirestoreRecyclerAdapter<Item,ItemAdapter.ItemV
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvItemTitle,tvPhone,tvTotal;
+        private TextView tvItemTitle,tvPhone,tvTotal,tvDate;
         private RecyclerView rvSubItem;
 
         ItemViewHolder(View itemView) {
@@ -101,6 +108,7 @@ public class ItemAdapter extends FirestoreRecyclerAdapter<Item,ItemAdapter.ItemV
             tvPhone = itemView.findViewById(R.id.tv_item_phone);
             rvSubItem = itemView.findViewById(R.id.rv_sub_item);
             tvTotal = itemView.findViewById(R.id.total);
+            tvDate = itemView.findViewById(R.id.date);
 
         }
     }
